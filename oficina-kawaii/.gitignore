@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
+# Datos locales de la app (misiones, biblioteca, memoria)
+data/
+*.db
+*.sqlite
+*.sqlite3

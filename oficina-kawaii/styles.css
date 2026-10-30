@@ -1,0 +1,94 @@
+/* Oficina Kawaii — paleta pastel, esquinas redondeadas, sombras suaves. */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+    --rosa: #ffd6e8;
+    --rosa-fuerte: #ff9ec7;
+    --lila: #e3d7ff;
+    --lila-fuerte: #b79ced;
+    --crema: #fff8ec;
+    --menta: #d3f5e3;
+    --menta-fuerte: #7fd6a8;
+    --texto: #5b4a63;
+    --sombra: 0 4px 14px rgba(183, 156, 237, 0.18);
+}
+
+html, body, [class*="css"] {
+    font-family: 'Nunito', 'Quicksand', sans-serif !important;
+    color: var(--texto);
+}
+
+.stApp {
+    background: linear-gradient(160deg, var(--crema) 0%, var(--rosa) 45%, var(--lila) 100%);
+}
+
+/* Barra superior kawaii */
+.barra-superior {
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 18px;
+    padding: 12px 18px;
+    box-shadow: var(--sombra);
+    margin-bottom: 14px;
+    border: 2px solid rgba(255, 158, 199, 0.35);
+}
+
+/* Tarjetas de empleados */
+.tarjeta-empleado {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--sombra);
+    border: 2px solid var(--lila);
+    text-align: center;
+    transition: transform 0.15s ease;
+}
+.tarjeta-empleado:hover { transform: translateY(-3px); }
+.emoji-grande { font-size: 2.6rem; }
+.estado-empleado { font-size: 0.85rem; font-weight: 700; }
+
+/* Botones redondeados */
+.stButton > button {
+    border-radius: 999px !important;
+    border: none !important;
+    background: linear-gradient(90deg, var(--rosa-fuerte), var(--lila-fuerte)) !important;
+    color: white !important;
+    font-weight: 800 !important;
+    padding: 0.45rem 1.2rem !important;
+}
+.stButton > button:hover { filter: brightness(1.05); }
+
+/* Chat */
+.stChatMessage {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-radius: 18px !important;
+    border: 2px solid var(--rosa) !important;
+}
+
+/* Progreso */
+.stProgress > div > div {
+    background: linear-gradient(90deg, var(--menta-fuerte), var(--rosa-fuerte)) !important;
+    border-radius: 999px;
+}
+
+/* Pestañas */
+.stTabs [data-baseweb="tab-list"] { gap: 8px; }
+.stTabs [data-baseweb="tab"] {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 999px 999px 0 0;
+    font-weight: 800;
+}
+
+/* Tablero de misión */
+.columna-tablero {
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 16px;
+    padding: 10px;
+    border: 2px dashed var(--lila-fuerte);
+}
+
+/* Entradas de texto */
+.stTextInput > div > div > input, .stTextArea > div > div > textarea {
+    border-radius: 14px !important;
+    border: 2px solid var(--lila) !important;
+}
