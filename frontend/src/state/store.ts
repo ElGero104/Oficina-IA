@@ -24,6 +24,8 @@ interface AppState {
   setCameraView: (n: number) => void;
   focus: { target: [number, number, number]; radius: number; follow: boolean } | null;
   setFocus: (f: { target: [number, number, number]; radius: number; follow: boolean } | null) => void;
+  debug: boolean;
+  setDebug: (v: boolean) => void;
 }
 
 export const useApp = create<AppState>((set) => ({
@@ -42,4 +44,6 @@ export const useApp = create<AppState>((set) => ({
   setCameraView: (cameraView) => set({ cameraView }),
   focus: null,
   setFocus: (focus) => set({ focus }),
+  debug: new URLSearchParams(window.location.search).has("debug"),
+  setDebug: (debug) => set({ debug }),
 }));

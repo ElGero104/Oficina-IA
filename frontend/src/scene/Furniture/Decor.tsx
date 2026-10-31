@@ -1,5 +1,5 @@
-import { PALETTE } from "../layout";
-import { RoundedBox, Plant } from "./Basics";
+import { OFFICE, PALETTE, ZONES } from "../layout";
+import { RoundedBox } from "./Basics";
 
 // Accesorios decorativos ligeros (primitivas baratas, sin texturas externas).
 
@@ -123,31 +123,23 @@ export function TrashBin(props: { position: [number, number, number] }) {
 }
 
 export function DecorSet() {
-  // Distribución fija de decoración por toda la oficina.
   return (
     <group>
-      <CeilingLamp position={[0.5, 3.1, -0.4]} />
-      <CeilingLamp position={[-4.5, 3.1, -0.4]} />
-      <CeilingLamp position={[5.5, 3.1, -0.4]} />
-      <CeilingLamp position={[3.0, 3.1, 6.2]} />
-      <CeilingLamp position={[-2.0, 3.1, 4.6]} />
-      <Rug position={[0.5, 0, 4.4]} size={[6.0, 2.6]} color={PALETTE.rosaSuave} />
-      <Rug position={[-9.2, 0, -6.2]} size={[2.6, 2.2]} color="#d8ecf5" />
-      <Rug position={[8.8, 0, 0.6]} size={[3.4, 3.0]} color={PALETTE.rosaSuave} />
-      <WallClock position={[0.5, 2.5, -7.98]} />
-      <WallPainting position={[-5.5, 2.0, -7.98]} color={PALETTE.rosa} />
-      <WallPainting position={[6.5, 2.0, -7.98]} color={PALETTE.menta} />
-      <WallPainting position={[10.98, 2.0, 0]} rotationY={-Math.PI / 2} color={PALETTE.lila} />
-      <WallPainting position={[-10.98, 2.0, 2.0]} rotationY={Math.PI / 2} color={PALETTE.rosaSuave} />
-      <Bookshelf position={[-10.9, 0, 4.0]} rotationY={Math.PI / 2} />
-      <Bookshelf position={[-1.0, 0, -7.9]} />
-      <PottedTree position={[-10.2, 0, -7.2]} />
-      <PottedTree position={[10.2, 0, 7.0]} scale={1.1} />
-      <Plant position={[-6.8, 0, 6.8]} />
-      <Plant position={[0.5, 0, 7.4]} />
-      <WaterCooler position={[-6.2, 0, 5.2]} />
-      <TrashBin position={[6.0, 0.22, 4.2]} />
-      <TrashBin position={[-5.0, 0.22, -4.2]} />
+      <CeilingLamp position={[0, OFFICE.wallHeight - 0.1, 0]} />
+      <CeilingLamp position={[-5, OFFICE.wallHeight - 0.1, 0]} />
+      <CeilingLamp position={[5, OFFICE.wallHeight - 0.1, 0]} />
+      <CeilingLamp position={[ZONES.recepcion.x, OFFICE.wallHeight - 0.1, ZONES.recepcion.z]} />
+      <Rug position={[ZONES.recepcion.x, 0, ZONES.recepcion.z + 0.5]} size={[5, 2]} color={PALETTE.rosaSuave} />
+      <WallClock position={[0, 2.5, -OFFICE.depth / 2 + 0.15]} />
+      <WallPainting position={[-6, 2.0, -OFFICE.depth / 2 + 0.15]} color={PALETTE.rosa} />
+      <WallPainting position={[7, 2.0, -OFFICE.depth / 2 + 0.15]} color={PALETTE.menta} />
+      <WallPainting position={[OFFICE.width / 2 - 0.15, 2.0, 0]} rotationY={-Math.PI / 2} color={PALETTE.lila} />
+      <Bookshelf position={[-OFFICE.width / 2 + 0.4, 0, 4.0]} rotationY={Math.PI / 2} />
+      <PottedTree position={[-OFFICE.width / 2 + 0.8, 0, -OFFICE.depth / 2 + 0.8]} />
+      <PottedTree position={[OFFICE.width / 2 - 0.8, 0, OFFICE.depth / 2 - 1.0]} scale={1.1} />
+      <WaterCooler position={[-6.5, 0, 4.5]} />
+      <TrashBin position={[5.5, 0.22, 4.5]} />
+      <TrashBin position={[-5.0, 0.22, -4.0]} />
     </group>
   );
 }
