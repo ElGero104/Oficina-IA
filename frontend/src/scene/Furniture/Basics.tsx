@@ -51,8 +51,6 @@ export function Desk(props: { position: [number, number, number]; rotationY?: nu
       <RoundedBox args={[1.7, 0.08, 0.9]} position={[0, 0.74, 0]} color={PALETTE.madera} />
       <RoundedBox args={[0.08, 0.74, 0.8]} position={[-0.78, 0.37, 0]} color={PALETTE.maderaOscura} />
       <RoundedBox args={[0.08, 0.74, 0.8]} position={[0.78, 0.37, 0]} color={PALETTE.maderaOscura} />
-      {/* división baja entre escritorios */}
-      <RoundedBox args={[0.04, 0.35, 0.7]} position={[0, 0.95, -0.55]} color={PALETTE.lila} />
     </group>
   );
 }
