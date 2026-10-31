@@ -134,8 +134,8 @@ export function MeetingRoom() {
         <meshStandardMaterial color="#2e2a3a" />
       </mesh>
       {/* plantas decorativas */}
-      <Plant position={[z.x - 2.0, 0, z.z + 2.4]} scale={0.8} />
-      <Plant position={[z.x + 2.0, 0, z.z + 2.4]} scale={0.8} />
+      <Plant position={[z.x - 2.4, 0, z.z + 2.4]} scale={0.8} />
+      <Plant position={[z.x + 2.4, 0, z.z + 2.4]} scale={0.8} />
     </group>
   );
 }
