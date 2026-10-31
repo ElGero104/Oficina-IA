@@ -21,13 +21,14 @@ function zoneFloor(x: number, z: number, w: number, d: number, color: string) {
   );
 }
 
-function glassWall(length: number, height: number) {
-  return (
-    <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} side={THREE.DoubleSide} />
-  );
-}
+const glassMat = new THREE.MeshStandardMaterial({
+  color: PALETTE.cristal, transparent: true, opacity: 0.3, roughness: 0.1, side: THREE.DoubleSide,
+});
+const doorMat = new THREE.MeshStandardMaterial({
+  color: PALETTE.crema, roughness: 0.4, side: THREE.DoubleSide,
+});
 
-// Tabique con hueco de puerta centrado en `doorAt` (coordenada a lo largo del tabique).
+// Tabique de vidrio con hueco de puerta centrado en `doorAt` (coordenada a lo largo del tabique).
 function GlassPartition(props: {
   axis: "x" | "z";
   fixed: number;
@@ -39,42 +40,36 @@ function GlassPartition(props: {
   const { axis, fixed, center, length } = props;
   const doorW = props.doorW ?? 1.0;
   const doorAt = props.doorAt ?? center;
-  const wall = glassWall(length, 3);
-  const seg = (from: number, to: number) => {
-    const len = to - from;
-    if (len <= 0.01) return null;
-    const mid = (from + to) / 2;
-    return axis === "z"
-      ? <mesh key={mid} position={[fixed, 1.5, mid]} material={wall}><boxGeometry args={[0.05, 3, len]} /></mesh>
-      : <mesh key={mid} position={[mid, 1.5, fixed]} material={wall}><boxGeometry args={[len, 3, 0.05]} /></mesh>;
-  };
   const half = length / 2;
   const a = center - half;
   const b = center + half;
   const d0 = doorAt - doorW / 2;
   const d1 = doorAt + doorW / 2;
-  const door: [number, number] = [d0, d1];
+  const seg = (from: number, to: number, key: string) => {
+    const len = to - from;
+    if (len <= 0.01) return null;
+    const mid = (from + to) / 2;
+    return axis === "z"
+      ? <mesh key={key} position={[fixed, 1.5, mid]} material={glassMat}><boxGeometry args={[0.05, 3, len]} /></mesh>
+      : <mesh key={key} position={[mid, 1.5, fixed]} material={glassMat}><boxGeometry args={[len, 3, 0.05]} /></mesh>;
+  };
   return (
     <group>
-      {seg(a, d0)}
-      {seg(d1, b)}
+      {seg(a, d0, "a")}
+      {seg(d1, b, "b")}
       {/* hoja de puerta sólida, desplazada para no hacer z-fighting */}
-      {props.doorW !== undefined && (
-        <mesh
-          position={axis === "z" ? [fixed + 0.045, 1.15, doorAt] : [doorAt, 1.15, fixed + 0.045]}
-        >
-          <boxGeometry args={axis === "z" ? [0.04, 2.3, doorW] : [doorW, 2.3, 0.04]} />
-          <meshStandardMaterial color={PALETTE.crema} roughness={0.4} side={THREE.DoubleSide} />
-        </mesh>
-      )}
-      {props.doorW !== undefined && (
-        <mesh
-          position={axis === "z" ? [fixed + 0.08, 1.15, doorAt + doorW / 2 - 0.12] : [doorAt + doorW / 2 - 0.12, 1.15, fixed + 0.08]}
-        >
-          <sphereGeometry args={[0.05, 8, 8]} />
-          <meshStandardMaterial color="#ffd166" metalness={0.7} roughness={0.3} />
-        </mesh>
-      )}
+      <mesh
+        position={axis === "z" ? [fixed + 0.045, 1.15, doorAt] : [doorAt, 1.15, fixed + 0.045]}
+        material={doorMat}
+      >
+        <boxGeometry args={axis === "z" ? [0.04, 2.3, doorW] : [doorW, 2.3, 0.04]} />
+      </mesh>
+      <mesh
+        position={axis === "z" ? [fixed + 0.08, 1.15, doorAt + doorW / 2 - 0.12] : [doorAt + doorW / 2 - 0.12, 1.15, fixed + 0.08]}
+      >
+        <sphereGeometry args={[0.05, 8, 8]} />
+        <meshStandardMaterial color="#ffd166" metalness={0.7} roughness={0.3} />
+      </mesh>
     </group>
   );
 }
@@ -151,7 +146,7 @@ export function BossOffice() {
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.lila)}
       {/* tabique frontal con puerta despejada (centrada en x = b.x) */}
-      <GlassPartition axis="z" fixed={-4.45} center={0} length={z.w} doorW={1.2} doorAt={b.x} />
+      <GlassPartition axis="z" fixed={-4.45} center={0} length={z.w} doorW={1.2} doorAt={b.position.x} />
       {/* escritorio grande */}
       <RoundedBox args={[2.6, 0.1, 1.2]} position={[b.position.x, 0.78, b.position.z]} color={PALETTE.madera} />
       <RoundedBox args={[0.1, 0.78, 1.1]} position={[b.position.x - 1.2, 0.39, b.position.z]} color={PALETTE.maderaOscura} />
