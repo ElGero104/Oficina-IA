@@ -47,7 +47,7 @@ function Desk({
     <group position={[x, y, z]}>
       <mesh position={[0, 0.45, 0]} castShadow>
         <boxGeometry args={[2.4, 0.08, 1.1]} />
-        <meshStandardMaterial color="#3f3f46" />
+        <meshStandardMaterial color="#52525b" />
       </mesh>
       <mesh position={[-1, 0.22, 0.3]}>
         <boxGeometry args={[0.08, 0.45, 0.08]} />
@@ -65,7 +65,7 @@ function Desk({
         <group key={i} position={[(i - (monitors - 1) / 2) * 0.62, 1.05, -0.25]}>
           <mesh ref={i === 0 ? screenRef : undefined}>
             <boxGeometry args={vertical ? [0.42, 0.72, 0.04] : [0.58, 0.36, 0.04]} />
-            <meshStandardMaterial color="#0b1020" emissive="#7dd3fc" emissiveIntensity={0.25} />
+            <meshStandardMaterial color="#0b1020" emissive="#7dd3fc" emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[0, -0.24, 0.03]}>
             <boxGeometry args={[0.1, 0.12, 0.05]} />
@@ -75,7 +75,7 @@ function Desk({
       ))}
       <mesh position={[0.9, 0.62, 0.1]} rotation={[0, Math.PI / 4, 0]}>
         <boxGeometry args={[0.06, 0.3, 0.06]} />
-        <meshStandardMaterial ref={ledRef} color="#111111" emissive={desk.ledColor} emissiveIntensity={0.15} />
+        <meshStandardMaterial ref={ledRef} color="#111111" emissive={desk.ledColor} emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[0, 1.75, 0]}>
         <sphereGeometry args={[0.22, 16, 16]} />
@@ -108,14 +108,15 @@ export default function Office3D({ scene }: { scene: SceneState }) {
     <>
       <color attach="background" args={["#0b1020"]} />
       <fog attach="fog" args={["#0b1020", 18, 34]} />
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[6, 10, 4]} intensity={1.1} castShadow />
-      <pointLight position={[0, 4, 0]} intensity={0.6} />
+      <ambientLight intensity={0.9} />
+      <hemisphereLight args={["#93c5fd", "#1e293b", 0.8]} />
+      <directionalLight position={[6, 10, 4]} intensity={1.6} castShadow />
+      <pointLight position={[0, 4, 0]} intensity={1.2} />
       <CameraRig scene={scene} />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 1]} receiveShadow>
         <planeGeometry args={[24, 16]} />
-        <meshStandardMaterial color="#111827" />
+        <meshStandardMaterial color="#1f2937" />
       </mesh>
       <gridHelper args={[24, 24, "#1f2937", "#1f2937"]} position={[0, 0.01, 1]} />
 
