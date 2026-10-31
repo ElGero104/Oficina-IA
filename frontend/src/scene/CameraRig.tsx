@@ -45,7 +45,6 @@ export function CameraRig() {
 
   // Proyecta un punto de pantalla al piso (y=0) y enfoca la cámara ahí.
   const focusAtScreenPoint = (cx: number, cy: number) => {
-    const { camera, gl, size } = useThree.getState();
     const ray = new THREE.Raycaster();
     const ndc = new THREE.Vector2((cx / size.width) * 2 - 1, -(cy / size.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
