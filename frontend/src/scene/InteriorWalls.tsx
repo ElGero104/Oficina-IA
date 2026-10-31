@@ -80,6 +80,8 @@ export function InteriorWalls() {
       <Door axis="z" fixed={-7.3} at={-6.2} w={1.3} />
       {/* muro horizontal que separa el baño de la sala de reuniones */}
       <WallSeg axis="x" fixed={-4.7} from={-11} to={-5.6} />
+      {/* pared norte que CIERRA la sala de reuniones */}
+      <WallSeg axis="x" fixed={4.1} from={-11} to={-5.6} />
       {/* muro este del ala de salas */}
       <WallSeg axis="z" fixed={6.6} from={-8} to={-4.2} />
       <WallSeg axis="z" fixed={6.6} from={-3.0} to={-1.4} />
