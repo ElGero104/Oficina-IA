@@ -1,0 +1,19 @@
+# Entorno y secretos (nunca subirlos)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node / frontend
+node_modules/
+dist/
+*.local
+
+# Sistema
+.DS_Store
