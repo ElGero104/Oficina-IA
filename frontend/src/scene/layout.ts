@@ -26,7 +26,7 @@ export const ZONES = {
   recepcion: { x: 3.0, z: 6.6, w: 8, d: 2.4 },
   escritorios: { x: 0.5, z: -0.4, w: 15, d: 6.0 },
   despachoJefa: { x: 2.0, z: -6.7, w: 8, d: 2.5 },
-  reuniones: { x: -8.25, z: 1.3, w: 5.0, d: 5.6 },
+  reuniones: { x: -8.25, z: 1.3, w: 4.7, d: 5.6 },
   bano: { x: -9.2, z: -6.2, w: 3.6, d: 3.0 },
   cocina: { x: 8.8, z: -5.4, w: 4.2, d: 3.2 },
   descanso: { x: 8.8, z: 0.6, w: 4.4, d: 3.6 },
