@@ -25,10 +25,17 @@ especializados, mientras el frontend anima la escena 3D (Three.js / React Three 
 
 ```bash
 cd backend
+cp ../.env.example ../.env   # y pon tu MISTRAL_API_KEY
 pip install -r requirements.txt
 python -m pytest tests/ -q
 uvicorn main:app --reload --port 8000
 ```
+
+Con `MISTRAL_API_KEY` configurada, cada agente responde de verdad vía Mistral usando
+su system prompt de rol (skills incluidas en `backend/office/skills.py`). Sin token,
+el sistema usa respuestas deterministas de respaldo (los tests no necesitan red).
+En Render, define `MISTRAL_API_KEY` como variable de entorno secreta del servicio
+(ya está listada en `render.yaml` con `sync: false`).
 
 Endpoints: `GET /api/office`, `POST /api/delegate`, `POST /api/execute`, `POST /api/chat`.
 El orquestador responde siempre con el JSON obligatorio (`user_response`,

@@ -17,8 +17,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from office.agents import OfficeState
+from office.llm import MistralClient
 from office.orchestrator import delegate, scene_for
-from office.specialists import agent_meta, execute
+from office.specialists import agent_meta, execute, execute_with_llm
 
 app = FastAPI(title="Oficina Virtual IA", version="1.0.0")
 
@@ -49,9 +50,9 @@ def api_delegate(pedido: Pedido) -> dict:
 
 
 @app.post("/api/execute")
-def api_execute(pedido: Pedido) -> dict:
+async def api_execute(pedido: Pedido) -> dict:
     delegation = delegate(pedido.mensaje)
-    result = execute(delegation.assigned_agent, delegation, pedido.mensaje)
+    result = await execute_with_llm(delegation.assigned_agent, delegation, pedido.mensaje, MistralClient())
     return {
         "delegation": delegation.to_dict(),
         "result": result,
@@ -64,9 +65,9 @@ def api_execute(pedido: Pedido) -> dict:
 
 
 @app.post("/api/chat")
-def api_chat(pedido: Pedido) -> dict:
+async def api_chat(pedido: Pedido) -> dict:
     delegation = delegate(pedido.mensaje)
-    result = execute(delegation.assigned_agent, delegation, pedido.mensaje)
+    result = await execute_with_llm(delegation.assigned_agent, delegation, pedido.mensaje, MistralClient())
     return {
         "delegation": delegation.to_dict(),
         "result": result,

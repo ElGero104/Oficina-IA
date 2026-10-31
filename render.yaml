@@ -9,3 +9,7 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.12"
+      - key: MISTRAL_API_KEY
+        sync: false
+      - key: MISTRAL_MODEL
+        value: mistral-small-latest

@@ -10,7 +10,9 @@ from __future__ import annotations
 import re
 
 from .agents import AGENTS
+from .llm import ChatMessage, LLMError, MistralClient
 from .orchestrator import Delegation
+from .skills import system_prompt_for
 
 
 def _sections(title: str, body: list[str]) -> str:
@@ -103,9 +105,35 @@ _RUNNERS = {
 
 
 def execute(agent_key: str, delegation: Delegation, pedido: str) -> str:
-    """Ejecuta la instrucción refinada con el agente indicado."""
+    """Ejecuta la instrucción refinada con el agente indicado (síncrono, fallback)."""
     if agent_key not in _RUNNERS:
         raise KeyError(f"Agente desconocido: {agent_key}")
+    return _RUNNERS[agent_key](delegation, pedido)
+
+
+async def execute_with_llm(
+    agent_key: str,
+    delegation: Delegation,
+    pedido: str,
+    client: MistralClient | None = None,
+) -> str:
+    """Ejecuta con Mistral usando el system prompt del rol (skills incluidas).
+
+    Si no hay token configurado o la llamada falla, cae al resultado
+    determinista local para que la oficina nunca quede sin respuesta.
+    """
+    if agent_key not in _RUNNERS:
+        raise KeyError(f"Agente desconocido: {agent_key}")
+    client = client or MistralClient()
+    if client.available:
+        messages = [
+            ChatMessage(role="system", content=system_prompt_for(agent_key)),
+            ChatMessage(role="user", content=delegation.refined_instruction),
+        ]
+        try:
+            return await client.chat(messages)
+        except LLMError:
+            pass
     return _RUNNERS[agent_key](delegation, pedido)
 
 
