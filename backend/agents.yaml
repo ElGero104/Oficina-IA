@@ -27,7 +27,7 @@ boss:
     color_principal: "#f7d6e0"
     color_secundario: "#ffffff"
     accesorio: corona
-    posicion: [1.5, 0.0, -6.0]
+    posicion: [2.0, 0.0, -7.0]
     zona: despacho_jefa
   rutina_idle:
     - revisar_documentos
