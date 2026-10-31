@@ -52,7 +52,8 @@ export function DeskArea() {
       {DESKS.map((d) => (
         <group key={d.id}>
           <Desk position={[d.position.x, d.position.y, d.position.z]} rotationY={d.rotationY} />
-          <Chair position={[d.position.x, 0, d.position.z + (d.rotationY === 0 ? 0.85 : -0.85)]} rotationY={d.rotationY} />
+          {/* la silla queda detrás del escritorio y orientada hacia la pantalla */}
+          <Chair position={[d.position.x, 0, d.position.z + (d.rotationY === 0 ? 0.85 : -0.85)]} rotationY={d.rotationY + Math.PI} />
           <Monitor position={[d.position.x, 0.82, d.position.z + (d.rotationY === 0 ? -0.15 : 0.15)]} />
           <Mug position={[d.position.x + 0.5, 0.83, d.position.z]} color={PALETTE.menta} />
           <Lamp position={[d.position.x - 0.6, 0.78, d.position.z + (d.rotationY === 0 ? -0.2 : 0.2)]} />
@@ -76,10 +77,24 @@ export function BossOffice() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.lila)}
-      {/* tabique de vidrio frontal */}
-      <mesh position={[0, 1.5, -3.2]}>
-        <boxGeometry args={[8, 3, 0.05]} />
+      {/* tabique de vidrio frontal con puerta central */}
+      <mesh position={[-2.6, 1.5, -3.2]}>
+        <boxGeometry args={[4.4, 3, 0.05]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
+      <mesh position={[2.6, 1.5, -3.2]}>
+        <boxGeometry args={[4.4, 3, 0.05]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
+      {/* puerta de vidrio del despacho */}
+      <mesh position={[0, 1.15, -3.2]}>
+        <boxGeometry args={[1.2, 2.3, 0.06]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.55} roughness={0.1} />
+      </mesh>
+      <RoundedBox args={[1.3, 0.08, 0.12]} position={[0, 2.36, -3.2]} color={PALETTE.maderaOscura} />
+      <mesh position={[0.45, 1.15, -3.14]}>
+        <sphereGeometry args={[0.05, 8, 8]} />
+        <meshStandardMaterial color="#ffd166" metalness={0.7} roughness={0.3} />
       </mesh>
       {/* escritorio grande */}
       <RoundedBox args={[2.6, 0.1, 1.2]} position={[b.position.x, 0.78, b.position.z]} color={PALETTE.madera} />
@@ -104,11 +119,21 @@ export function MeetingRoom() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
-      {/* tabique de vidrio */}
-      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z]}>
-        <boxGeometry args={[0.05, 3, z.d]} />
+      {/* tabique de vidrio este con puerta */}
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z - 0.9]}>
+        <boxGeometry args={[0.05, 3, 1.4]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
       </mesh>
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z + 0.9]}>
+        <boxGeometry args={[0.05, 3, 1.4]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
+      {/* puerta de la sala de reuniones */}
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.15, z.z]}>
+        <boxGeometry args={[0.06, 2.3, 1.0]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.55} roughness={0.1} />
+      </mesh>
+      <RoundedBox args={[0.12, 0.08, 1.1]} position={[z.x + z.w / 2 + 0.02, 2.36, z.z]} color={PALETTE.maderaOscura} />
       {/* mesa larga */}
       <RoundedBox args={[3.2, 0.08, 1.2]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
       <RoundedBox args={[0.1, 0.74, 1.0]} position={[z.x - 1.4, 0.37, z.z]} color={PALETTE.maderaOscura} />
@@ -135,6 +160,21 @@ export function Kitchen() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.crema)}
+      {/* tabique oeste de la cocina con puerta */}
+      <mesh position={[z.x - z.w / 2 - 0.02, 1.5, z.z - 0.9]}>
+        <boxGeometry args={[0.05, 3, 1.4]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
+      <mesh position={[z.x - z.w / 2 - 0.02, 1.5, z.z + 0.9]}>
+        <boxGeometry args={[0.05, 3, 1.4]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
+      {/* puerta de la cocina */}
+      <mesh position={[z.x - z.w / 2 - 0.02, 1.15, z.z]}>
+        <boxGeometry args={[0.06, 2.3, 1.0]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.55} roughness={0.1} />
+      </mesh>
+      <RoundedBox args={[0.12, 0.08, 1.1]} position={[z.x - z.w / 2 - 0.02, 2.36, z.z]} color={PALETTE.maderaOscura} />
       {/* mesón con cafetera */}
       <RoundedBox args={[3.0, 0.9, 0.8]} position={[z.x, 0.45, z.z + 0.9]} color={PALETTE.madera} />
       <mesh position={[z.x - 0.8, 1.05, z.z + 0.9]} castShadow>
