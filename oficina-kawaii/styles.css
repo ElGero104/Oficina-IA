@@ -1,10 +1,10 @@
-/* Oficina Kawaii — paleta azul, esquinas redondeadas, sombras suaves. */
+/* Oficina Kawaii — escena pixel-art animada, paleta azul. */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
 :root {
-    --azul: #d6e9ff;
+    --azul: #bcd9ff;
     --azul-fuerte: #4d94ff;
     --azul-oscuro: #1f5fbf;
     --cielo: #e8f4ff;
@@ -18,81 +18,116 @@ html, body, [class*="css"] {
     color: var(--texto);
 }
 
-/* Los emojis se ven en cualquier sistema */
-.emoji-grande, .estado-empleado, .stMarkdown, .stButton, [data-testid="stChatMessage"] {
-    font-family: 'Nunito', 'Noto Color Emoji', sans-serif !important;
-}
-
 .stApp {
-    background: linear-gradient(160deg, var(--crema) 0%, var(--azul) 55%, var(--cielo) 100%);
+    background: linear-gradient(180deg, var(--cielo) 0%, var(--azul) 60%, #9cc4f5 100%);
 }
 
-/* Barra superior */
-.barra-superior {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 18px;
-    padding: 12px 18px;
-    box-shadow: var(--sombra);
-    margin-bottom: 14px;
-    border: 2px solid rgba(77, 148, 255, 0.4);
-}
-
-/* Tarjetas de empleados */
-.tarjeta-empleado {
-    background: rgba(255, 255, 255, 0.92);
+/* ---------- ESCENA PIXEL ART DE LA OFICINA ---------- */
+.escena-oficina {
+    position: relative;
+    height: 260px;
     border-radius: 20px;
-    padding: 16px;
-    box-shadow: var(--sombra);
-    border: 2px solid var(--azul-fuerte);
-    text-align: center;
-    transition: transform 0.15s ease;
+    overflow: hidden;
+    border: 4px solid var(--azul-oscuro);
+    box-shadow: var(--sombra), inset 0 0 40px rgba(255,255,255,0.35);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0) 62%, #7fb3ee 62%, #5d97dd 100%);
+    image-rendering: pixelated;
+    margin-bottom: 12px;
+}
+.escena-oficina::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(circle at 15% 20%, #fff 0 12px, transparent 13px),
+        radial-gradient(circle at 80% 12%, #fff 0 16px, transparent 17px),
+        radial-gradient(circle at 55% 30%, #fff 0 9px, transparent 10px);
+    opacity: .9;
+}
+.sol-pixel {
+    position: absolute; top: 12px; right: 18px; width: 28px; height: 28px;
+    background: #ffd94d;
+    box-shadow: 0 0 0 4px #ffd94d, 0 0 24px 8px rgba(255, 217, 77, .8);
+    image-rendering: pixelated;
+    animation: girarSol 12s linear infinite;
+}
+@keyframes girarSol { to { transform: rotate(360deg); } }
+.piso-pixel {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 56px;
+    background:
+        repeating-linear-gradient(90deg, #c98d5e 0 32px, #b97a4c 32px 64px),
+        linear-gradient(180deg, #c98d5e, #a86a40);
+    border-top: 4px solid #8a5530;
+}
+.mesas-pixel {
+    position: absolute; left: 0; right: 0; bottom: 40px; height: 26px;
+    background: repeating-linear-gradient(90deg, transparent 0 118px, #6e4a2f 118px 138px, transparent 138px 256px);
+}
+
+/* Muñeco pixelado genérico (cuerpo 16x16 escalado) */
+.muneco {
+    position: absolute; bottom: 52px; width: 48px; height: 64px;
+    image-rendering: pixelated;
+    transition: left .6s ease;
+}
+.muneco .cuerpo {
+    position: absolute; inset: 0;
+    background: var(--color-cuerpo, #4d94ff);
+    clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);
+}
+.muneco .cara {
+    position: absolute; top: 10px; left: 12px; width: 24px; height: 18px;
+    background:
+        radial-gradient(circle at 6px 8px, #1e3a5f 0 3px, transparent 4px),
+        radial-gradient(circle at 18px 8px, #1e3a5f 0 3px, transparent 4px),
+        radial-gradient(circle at 12px 15px, #ff8fab 0 2px, transparent 3px);
+}
+.muneco .sombrero {
+    position: absolute; top: -8px; left: 8px; width: 32px; height: 12px;
+    background: var(--color-sombrero, #1f5fbf);
+    clip-path: polygon(0 100%, 15% 0, 85% 0, 100% 100%);
+}
+
+/* Estados animados */
+.muneco.estado-esperando { animation: respirar 2.4s ease-in-out infinite; }
+.muneco.estado-trabajando { animation: caminar .5s ease-in-out infinite alternate, rebote .5s ease-in-out infinite; }
+.muneco.estado-entregado { animation: saltoCelebra .7s ease-in-out infinite; }
+@keyframes respirar { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes caminar { from { margin-left: -6px; } to { margin-left: 6px; } }
+@keyframes rebote { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes saltoCelebra { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-16px) scale(1.06); } }
+
+.etiqueta-muneco {
+    position: absolute; bottom: 122px; transform: translateX(-50%);
+    background: rgba(255,255,255,.92); border: 2px solid var(--azul-oscuro);
+    border-radius: 10px; padding: 2px 8px; font-size: .75rem; font-weight: 800;
+    white-space: nowrap;
+}
+
+/* ---------- RESTO DE LA APP ---------- */
+.barra-superior {
+    background: rgba(255,255,255,.82); border-radius: 18px; padding: 12px 18px;
+    box-shadow: var(--sombra); margin-bottom: 14px; border: 2px solid rgba(77,148,255,.45);
+}
+.tarjeta-empleado {
+    background: rgba(255,255,255,.94); border-radius: 20px; padding: 16px;
+    box-shadow: var(--sombra); border: 2px solid var(--azul-fuerte); text-align: center;
+    transition: transform .15s ease;
 }
 .tarjeta-empleado:hover { transform: translateY(-3px); }
 .emoji-grande { font-size: 2.6rem; }
-.estado-empleado { font-size: 0.85rem; font-weight: 700; }
+.estado-empleado { font-size: .85rem; font-weight: 700; }
+.titulo-pixel { font-family: 'Press Start 2P', 'Nunito', monospace !important; font-size: 1rem; color: var(--azul-oscuro); }
 
-/* Botones redondeados azules */
 .stButton > button {
-    border-radius: 999px !important;
-    border: none !important;
+    border-radius: 999px !important; border: none !important;
     background: linear-gradient(90deg, var(--azul-fuerte), var(--azul-oscuro)) !important;
-    color: white !important;
-    font-weight: 800 !important;
-    padding: 0.45rem 1.2rem !important;
+    color: #fff !important; font-weight: 800 !important; padding: .45rem 1.2rem !important;
 }
 .stButton > button:hover { filter: brightness(1.08); }
-
-/* Chat */
-.stChatMessage {
-    background: rgba(255, 255, 255, 0.88) !important;
-    border-radius: 18px !important;
-    border: 2px solid var(--azul) !important;
-}
-
-/* Progreso */
-.stProgress > div > div {
-    background: linear-gradient(90deg, var(--azul-fuerte), var(--azul-oscuro)) !important;
-    border-radius: 999px;
-}
-
-/* Pestañas */
+.stChatMessage { background: rgba(255,255,255,.9) !important; border-radius: 18px !important; border: 2px solid var(--azul) !important; }
+.stProgress > div > div { background: linear-gradient(90deg, var(--azul-fuerte), var(--azul-oscuro)) !important; border-radius: 999px; }
 .stTabs [data-baseweb="tab-list"] { gap: 8px; }
-.stTabs [data-baseweb="tab"] {
-    background: rgba(255, 255, 255, 0.75);
-    border-radius: 999px 999px 0 0;
-    font-weight: 800;
-}
-
-/* Tablero de misión */
-.columna-tablero {
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 16px;
-    padding: 10px;
-    border: 2px dashed var(--azul-fuerte);
-}
-
-/* Entradas de texto */
-.stTextInput > div > div > input, .stTextArea > div > div > textarea {
-    border-radius: 14px !important;
-    border: 2px solid var(--azul-fuerte) !important;
-}
+.stTabs [data-baseweb="tab"] { background: rgba(255,255,255,.78); border-radius: 999px 999px 0 0; font-weight: 800; }
+.columna-tablero { background: rgba(255,255,255,.72); border-radius: 16px; padding: 10px; border: 2px dashed var(--azul-fuerte); }
+.stTextInput > div > div > input, .stTextArea > div > div > textarea { border-radius: 14px !important; border: 2px solid var(--azul-fuerte) !important; }

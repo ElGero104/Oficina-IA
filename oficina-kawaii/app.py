@@ -115,6 +115,28 @@ def tab_oficina(agents, memory: Memory, board: MissionsBoard) -> None:
         for i, p in enumerate(st.session_state.get("prioridades_hoy", [])):
             st.checkbox(p, value=True, key=f"prio_{i}")
     empleados = [a for a in agents if not a.es_jefa]
+    st.markdown('<div class="escena-oficina">', unsafe_allow_html=True)
+    st.markdown('<div class="sol-pixel"></div><div class="mesas-pixel"></div><div class="piso-pixel"></div>', unsafe_allow_html=True)
+    total = len(empleados)
+    for i, agent in enumerate(empleados):
+        estado = estado_empleado(agent.id)
+        clase = "estado-esperando"
+        if "trabajando" in estado:
+            clase = "estado-trabajando"
+        elif "entregó" in estado:
+            clase = "estado-entregado"
+        izquierda = 6 + i * (88 // max(total, 1))
+        color = f"{abs(hash(agent.id)) % 0xFFFFFF:06x}"
+        st.markdown(
+            f'<div class="muneco {clase}" style="left:{izquierda}%; --color-cuerpo: #{color}; --color-sombrero: #{color}">'
+            f'<div class="sombrero"></div><div class="cuerpo"></div><div class="cara"></div></div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="etiqueta-muneco" style="left:{izquierda + 4}%">{agent.emoji} {agent.nombre} · {estado}</div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown("</div>", unsafe_allow_html=True)
     cols = st.columns(3)
     for i, agent in enumerate(empleados):
         with cols[i % 3]:

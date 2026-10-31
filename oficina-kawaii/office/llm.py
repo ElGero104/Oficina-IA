@@ -97,8 +97,9 @@ class MistralClient:
                 return self._complete_once(model, messages, temperature, json_mode)
             except mistral_errors.SDKError as exc:
                 ultimo_error = exc
-                status = getattr(exc, "status_code", None)
-                if status in (401, 403):
+                raw = getattr(exc, "raw_response", None)
+                status = getattr(raw, "status_code", None) or getattr(exc, "status_code", None)
+                if status in (400, 401, 403, 404, 422):
                     raise LLMError(
                         "🔑 La API de Mistral rechazó la clave (401/403). Revisa tu MISTRAL_API_KEY en .env. "
                         "Tu pedido quedó guardado para reintentar.",
