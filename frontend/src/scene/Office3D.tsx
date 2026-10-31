@@ -4,6 +4,41 @@ import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { AGENTS, BOSS, CAMERA_IDLE, SceneState, deskFor } from "./layout";
 
+function Box({ position, size, color }: { position: [number, number, number]; size: [number, number, number]; color: string }) {
+  return (
+    <mesh position={position} castShadow>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color={color} roughness={0.9} />
+    </mesh>
+  );
+}
+
+function PixelAvatar({ active, color }: { active: boolean; color: string }) {
+  const bodyRef = useRef<THREE.Group>(null);
+  useFrame(({ clock }) => {
+    if (bodyRef.current) {
+      const t = clock.getElapsedTime();
+      bodyRef.current.position.y = 1.15 + (active ? Math.abs(Math.sin(t * 8)) * 0.06 : Math.sin(t * 2) * 0.015);
+    }
+  });
+  const skin = "#f4c7a1";
+  const hair = "#3f2d20";
+  return (
+    <group ref={bodyRef} position={[0, 1.15, 0.15]}>
+      <Box position={[0, 0.45, 0]} size={[0.44, 0.5, 0.26]} color={color} />
+      <Box position={[-0.26, 0.45, 0]} size={[0.1, 0.4, 0.24]} color={skin} />
+      <Box position={[0.26, 0.45, 0]} size={[0.1, 0.4, 0.24]} color={skin} />
+      <Box position={[-0.12, 0.1, 0]} size={[0.16, 0.22, 0.24]} color="#27324a" />
+      <Box position={[0.12, 0.1, 0]} size={[0.16, 0.22, 0.24]} color="#27324a" />
+      <Box position={[0, 0.95, 0]} size={[0.5, 0.42, 0.3]} color={skin} />
+      <Box position={[0, 1.2, 0]} size={[0.52, 0.18, 0.32]} color={hair} />
+      <Box position={[-0.12, 0.96, 0.16]} size={[0.09, 0.09, 0.04]} color="#1f2937" />
+      <Box position={[0.12, 0.96, 0.16]} size={[0.09, 0.09, 0.04]} color="#1f2937" />
+      <Box position={[0, 0.84, 0.16]} size={[0.14, 0.05, 0.04]} color="#b45309" />
+    </group>
+  );
+}
+
 function Desk({
   desk,
   active,
@@ -35,7 +70,7 @@ function Desk({
     }
     if (screenRef.current) {
       const m = screenRef.current.material as THREE.MeshStandardMaterial;
-      m.emissiveIntensity = bossFlash && desk.key === "boss" ? 1.2 + Math.sin(t * 4) : active ? 1.4 : 0.25;
+      m.emissiveIntensity = bossFlash && desk.key === "boss" ? 1.2 + Math.sin(t * 4) : active ? 2.2 + Math.sin(t * 10) * 0.6 : 0.6;
     }
   });
 
@@ -73,15 +108,12 @@ function Desk({
           </mesh>
         </group>
       ))}
+      <PixelAvatar active={active} color={desk.ledColor} />
       <mesh position={[0.9, 0.62, 0.1]} rotation={[0, Math.PI / 4, 0]}>
         <boxGeometry args={[0.06, 0.3, 0.06]} />
         <meshStandardMaterial ref={ledRef} color="#111111" emissive={desk.ledColor} emissiveIntensity={0.5} />
       </mesh>
-      <mesh position={[0, 1.75, 0]}>
-        <sphereGeometry args={[0.22, 16, 16]} />
-        <meshStandardMaterial color="#f4c7a1" />
-      </mesh>
-      <Html position={[0, 2.25, 0]} center distanceFactor={10} occlude>
+      <Html position={[0, 2.45, 0]} center distanceFactor={10} occlude>
         <div className={`name-tag ${active ? "active" : ""}`} style={{ borderColor: desk.ledColor }}>
           {desk.name}
         </div>
