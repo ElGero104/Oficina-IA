@@ -126,25 +126,28 @@ export function DecorSet() {
   // Distribución fija de decoración por toda la oficina.
   return (
     <group>
-      <CeilingLamp position={[0, 3.1, -0.2]} />
-      <CeilingLamp position={[-5.4, 3.1, -1.8]} />
-      <CeilingLamp position={[5.5, 3.1, -1.8]} />
-      <CeilingLamp position={[2.5, 3.1, 5.4]} />
-      <Rug position={[0, 0, 3.6]} size={[4.5, 2.2]} color={PALETTE.rosaSuave} />
-      <Rug position={[-7.6, 0, -1.8]} size={[3.4, 3.4]} color={PALETTE.menta} />
-      <WallClock position={[0, 2.5, -6.98]} />
-      <WallPainting position={[-4.9, 2.0, -6.98]} color={PALETTE.rosa} />
-      <WallPainting position={[6.5, 2.0, -6.98]} color={PALETTE.menta} />
-      <WallPainting position={[9.98, 2.0, 0]} rotationY={-Math.PI / 2} color={PALETTE.lila} />
-      <Bookshelf position={[-9.9, 0, 3.4]} rotationY={Math.PI / 2} />
-      <Bookshelf position={[-1.5, 0, -6.9]} />
-      <PottedTree position={[-9.2, 0, -6.2]} />
-      <PottedTree position={[9.2, 0, 6.2]} scale={1.1} />
-      <Plant position={[-6.0, 0, 6.0]} />
-      <Plant position={[5.6, 0, 6.0]} />
-      <WaterCooler position={[-5.6, 0, 4.6]} />
-      <TrashBin position={[6.4, 0.22, 3.6]} />
-      <TrashBin position={[-6.4, 0.22, -3.2]} />
+      <CeilingLamp position={[0.5, 3.1, -0.4]} />
+      <CeilingLamp position={[-4.5, 3.1, -0.4]} />
+      <CeilingLamp position={[5.5, 3.1, -0.4]} />
+      <CeilingLamp position={[3.0, 3.1, 6.2]} />
+      <CeilingLamp position={[-2.0, 3.1, 4.6]} />
+      <Rug position={[0.5, 0, 4.4]} size={[6.0, 2.6]} color={PALETTE.rosaSuave} />
+      <Rug position={[-9.2, 0, -6.2]} size={[2.6, 2.2]} color="#d8ecf5" />
+      <Rug position={[8.8, 0, 0.6]} size={[3.4, 3.0]} color={PALETTE.rosaSuave} />
+      <WallClock position={[0.5, 2.5, -7.98]} />
+      <WallPainting position={[-5.5, 2.0, -7.98]} color={PALETTE.rosa} />
+      <WallPainting position={[6.5, 2.0, -7.98]} color={PALETTE.menta} />
+      <WallPainting position={[10.98, 2.0, 0]} rotationY={-Math.PI / 2} color={PALETTE.lila} />
+      <WallPainting position={[-10.98, 2.0, 2.0]} rotationY={Math.PI / 2} color={PALETTE.rosaSuave} />
+      <Bookshelf position={[-10.9, 0, 4.0]} rotationY={Math.PI / 2} />
+      <Bookshelf position={[-1.0, 0, -7.9]} />
+      <PottedTree position={[-10.2, 0, -7.2]} />
+      <PottedTree position={[10.2, 0, 7.0]} scale={1.1} />
+      <Plant position={[-6.8, 0, 6.8]} />
+      <Plant position={[0.5, 0, 7.4]} />
+      <WaterCooler position={[-6.2, 0, 5.2]} />
+      <TrashBin position={[6.0, 0.22, 4.2]} />
+      <TrashBin position={[-5.0, 0.22, -4.2]} />
     </group>
   );
 }

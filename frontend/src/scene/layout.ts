@@ -9,8 +9,8 @@ export interface Vec3 {
 }
 
 export const OFFICE = {
-  width: 20, // X: de -10 a +10
-  depth: 14, // Z: de -7 a +7
+  width: 22, // X: de -11 a +11
+  depth: 16, // Z: de -8 a +8
   wallHeight: 3.2,
   wallThickness: 0.25,
 } as const;
@@ -23,15 +23,14 @@ export function insideOffice(x: number, z: number): boolean {
 }
 
 export const ZONES = {
-  recepcion: { x: 2.5, z: 5.8, w: 7, d: 2.2 },
-  escritorios: { x: 0, z: -0.2, w: 11, d: 4.6 },
-  despachoJefa: { x: 1.5, z: -5.7, w: 7, d: 2.5 },
-  reuniones: { x: -7.6, z: -1.8, w: 4.4, d: 4.4 },
-  bano: { x: -7.9, z: -5.5, w: 3.4, d: 2.8 },
-  cocina: { x: 7.7, z: -4.6, w: 4.0, d: 3.0 },
-  descanso: { x: 7.6, z: 0.8, w: 4.2, d: 3.4 },
-  impresora: { x: 7.6, z: 5.0 },
-  archivero: { x: -6.5, z: 6.0 },
+  recepcion: { x: 3.0, z: 6.6, w: 8, d: 2.4 },
+  escritorios: { x: 0.5, z: -0.4, w: 15, d: 6.0 },
+  despachoJefa: { x: 2.0, z: -6.7, w: 8, d: 2.5 },
+  bano: { x: -9.2, z: -6.2, w: 3.6, d: 3.0 },
+  cocina: { x: 8.8, z: -5.4, w: 4.2, d: 3.2 },
+  descanso: { x: 8.8, z: 0.6, w: 4.4, d: 3.6 },
+  impresora: { x: 8.8, z: 5.6 },
+  archivero: { x: -7.5, z: 7.0 },
 } as const;
 
 export interface DeskSpot {
@@ -42,30 +41,30 @@ export interface DeskSpot {
 
 // Seis escritorios: 4 en la fila de atrás, 2 adelante. Ninguno tapa puertas:
 // la puerta de reuniones queda en z=-4.2 y la de descanso en z=0.8 (este), fuera del paso.
+// Open space amplio: 3 columnas x 2 filas, con pasillos despejados hacia cada puerta.
 export const DESKS: DeskSpot[] = [
-  { id: "pipo", position: { x: -4.0, y: 0, z: -2.4 }, rotationY: 0 },
-  { id: "luna", position: { x: -1.3, y: 0, z: -2.4 }, rotationY: 0 },
-  { id: "bit", position: { x: 1.4, y: 0, z: -2.4 }, rotationY: 0 },
-  { id: "nube", position: { x: 4.0, y: 0, z: -2.4 }, rotationY: 0 },
-  { id: "tico", position: { x: -2.6, y: 0, z: 1.9 }, rotationY: Math.PI },
-  { id: "koko", position: { x: 2.6, y: 0, z: 1.9 }, rotationY: Math.PI },
+  { id: "pipo", position: { x: -5.2, y: 0, z: -2.8 }, rotationY: 0 },
+  { id: "luna", position: { x: -1.8, y: 0, z: -2.8 }, rotationY: 0 },
+  { id: "bit", position: { x: 1.6, y: 0, z: -2.8 }, rotationY: 0 },
+  { id: "nube", position: { x: 5.0, y: 0, z: -2.8 }, rotationY: 0 },
+  { id: "tico", position: { x: -3.4, y: 0, z: 2.0 }, rotationY: Math.PI },
+  { id: "koko", position: { x: 3.4, y: 0, z: 2.0 }, rotationY: Math.PI },
 ];
 
 export const BOSS_DESK: DeskSpot = {
   id: "mochi",
-  position: { x: 1.5, y: 0, z: -6.0 },
+  position: { x: 2.0, y: 0, z: -7.0 },
   rotationY: 0,
 };
 
 // Puntos de navegación predefinidos (sin colisiones complejas).
 export const WAYPOINTS = {
-  cocina: { x: 6.0, y: 0, z: -4.6 },
-  impresora: { x: 7.6, y: 0, z: 4.2 },
-  recepcion: { x: 2.5, y: 0, z: 5.0 },
-  entradaJefa: { x: 1.5, y: 0, z: -4.4 },
-  mesaReuniones: { x: -7.6, y: 0, z: -1.8 },
-  bano: { x: -6.2, y: 0, z: -5.5 },
-  descanso: { x: 6.0, y: 0, z: 0.8 },
+  cocina: { x: 6.8, y: 0, z: -5.4 },
+  impresora: { x: 8.8, y: 0, z: 4.8 },
+  recepcion: { x: 3.0, y: 0, z: 5.8 },
+  entradaJefa: { x: 2.0, y: 0, z: -5.3 },
+  bano: { x: -7.4, y: 0, z: -6.2 },
+  descanso: { x: 6.8, y: 0, z: 0.6 },
 } as const;
 
 // Vistas rápidas de cámara: 1 isométrica, 2 aérea, 3 escritorios, 4 despacho, 5 reuniones.
@@ -76,11 +75,11 @@ export interface CameraView {
 }
 
 export const CAMERA_VIEWS: Record<number, CameraView> = {
-  1: { name: "isométrica", position: { x: 13, y: 11, z: 13 }, target: { x: 0, y: 0.5, z: 0 } },
-  2: { name: "aérea", position: { x: 0.1, y: 19, z: 0.1 }, target: { x: 0, y: 0, z: 0 } },
-  3: { name: "escritorios", position: { x: 0, y: 3.4, z: 7.5 }, target: { x: 0, y: 0.8, z: -1 } },
-  4: { name: "despacho de la Jefa", position: { x: 5.2, y: 2.6, z: -2.4 }, target: { x: 1.5, y: 0.9, z: -5.8 } },
-  5: { name: "sala de reuniones", position: { x: -3.4, y: 2.6, z: -1.2 }, target: { x: -7.6, y: 0.8, z: -1.8 } },
+  1: { name: "isométrica", position: { x: 15, y: 13, z: 15 }, target: { x: 0, y: 0.5, z: 0 } },
+  2: { name: "aérea", position: { x: 0.1, y: 22, z: 0.1 }, target: { x: 0, y: 0, z: 0 } },
+  3: { name: "escritorios", position: { x: 0.5, y: 4.0, z: 9.0 }, target: { x: 0.5, y: 0.8, z: -1 } },
+  4: { name: "despacho de la Jefa", position: { x: 6.5, y: 3.0, z: -2.6 }, target: { x: 2.0, y: 0.9, z: -6.8 } },
+  5: { name: "recepción", position: { x: 7.5, y: 2.8, z: 3.4 }, target: { x: 3.0, y: 0.8, z: 6.4 } },
 };
 
 // Puntos de interés con botón propio en la barra de cámara.
@@ -93,15 +92,14 @@ export interface PointOfInterest {
 }
 
 export const POINTS_OF_INTEREST: PointOfInterest[] = [
-  { id: "recepcion", label: "Recepción", emoji: "🛎️", target: [2.5, 0.8, 5.6], radius: 5 },
-  { id: "escritorios", label: "Escritorios", emoji: "🖥️", target: [0, 0.8, -0.2], radius: 8 },
-  { id: "jefa", label: "Despacho Jefa", emoji: "👑", target: [1.5, 0.9, -5.8], radius: 4.5 },
-  { id: "reuniones", label: "Reuniones", emoji: "🤝", target: [-7.6, 0.8, -1.8], radius: 5 },
-  { id: "cocina", label: "Cocina", emoji: "☕", target: [7.7, 0.8, -4.6], radius: 4.5 },
-  { id: "descanso", label: "Descanso", emoji: "🛋️", target: [7.6, 0.8, 0.8], radius: 4.5 },
-  { id: "bano", label: "Baño", emoji: "🚽", target: [-7.9, 0.8, -5.5], radius: 3.5 },
-  { id: "impresora", label: "Impresora", emoji: "🖨️", target: [7.6, 0.8, 5.0], radius: 3.5 },
-  { id: "archivero", label: "Archivero", emoji: "🗄️", target: [-6.5, 0.9, 6.0], radius: 3.5 },
+  { id: "recepcion", label: "Recepción", emoji: "🛎️", target: [3.0, 0.8, 6.4], radius: 5.5 },
+  { id: "escritorios", label: "Escritorios", emoji: "🖥️", target: [0.5, 0.8, -0.4], radius: 10 },
+  { id: "jefa", label: "Despacho Jefa", emoji: "👑", target: [2.0, 0.9, -6.8], radius: 5 },
+  { id: "cocina", label: "Cocina", emoji: "☕", target: [8.8, 0.8, -5.4], radius: 5 },
+  { id: "descanso", label: "Descanso", emoji: "🛋️", target: [8.8, 0.8, 0.6], radius: 5 },
+  { id: "bano", label: "Baño", emoji: "🚽", target: [-9.2, 0.8, -6.2], radius: 4 },
+  { id: "impresora", label: "Impresora", emoji: "🖨️", target: [8.8, 0.8, 5.6], radius: 4 },
+  { id: "archivero", label: "Archivero", emoji: "🗄️", target: [-7.5, 0.9, 7.0], radius: 4 },
 ];
 
 export const PALETTE = {

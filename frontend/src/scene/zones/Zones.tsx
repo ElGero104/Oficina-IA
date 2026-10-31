@@ -1,4 +1,4 @@
-import { PALETTE, ZONES, DESKS, BOSS_DESK, WAYPOINTS, insideOffice } from "../layout";
+import { PALETTE, ZONES, DESKS, BOSS_DESK, WAYPOINTS, insideOffice, OFFICE } from "../layout";
 import { RoundedBox, Desk, Chair, Monitor, Mug, Lamp, NamePlate, Plant } from "../Furniture/Basics";
 import { useApp } from "../../state/store";
 
@@ -55,7 +55,7 @@ export function Reception() {
 }
 
 function OFFICE_SUR() {
-  return 14 / 2 + 0.13;
+  return OFFICE.depth / 2 + 0.13;
 }
 
 export function DeskArea() {
@@ -105,35 +105,6 @@ export function BossOffice() {
       {/* bandejas Entrada/Salida */}
       <RoundedBox args={[0.4, 0.06, 0.3]} position={[b.position.x - 0.8, 0.86, b.position.z + 0.3]} color={PALETTE.rosa} />
       <RoundedBox args={[0.4, 0.06, 0.3]} position={[b.position.x - 0.3, 0.86, b.position.z + 0.3]} color={PALETTE.menta} />
-    </group>
-  );
-}
-
-export function MeetingRoom() {
-  const z = ZONES.reuniones;
-  return (
-    <group>
-      {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
-      {/* mesa larga centrada */}
-      <RoundedBox args={[3.0, 0.08, 1.4]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
-      <RoundedBox args={[0.1, 0.74, 1.2]} position={[z.x - 1.3, 0.37, z.z]} color={PALETTE.maderaOscura} />
-      <RoundedBox args={[0.1, 0.74, 1.2]} position={[z.x + 1.3, 0.37, z.z]} color={PALETTE.maderaOscura} />
-      {/* sillas alrededor de la mesa, todas mirando al centro */}
-      {[-1.0, -0.33, 0.33, 1.0].map((dx, i) => (
-        <Chair key={i} position={[z.x + dx, 0, z.z - 1.0]} rotationY={0} />
-      ))}
-      {[-0.66, 0.66].map((dx, i) => (
-        <Chair key={`b${i}`} position={[z.x + dx, 0, z.z + 1.0]} rotationY={Math.PI} />
-      ))}
-      <Chair position={[z.x - 1.7, 0, z.z]} rotationY={Math.PI / 2} />
-      <Chair position={[z.x + 1.7, 0, z.z]} rotationY={-Math.PI / 2} />
-      {/* pizarra en la pared oeste */}
-      <RoundedBox args={[2.4, 1.1, 0.05]} position={[z.x - z.w / 2 + 0.05, 1.8, z.z]} color="#ffffff" />
-      {/* proyector */}
-      <mesh position={[z.x, 2.9, z.z]}>
-        <cylinderGeometry args={[0.12, 0.12, 0.12, 12]} />
-        <meshStandardMaterial color="#2e2a3a" />
-      </mesh>
     </group>
   );
 }
