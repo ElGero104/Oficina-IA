@@ -18,9 +18,34 @@ export default function App() {
   const setLightMode = useApp((s) => s.setLightMode);
 
   useEffect(() => {
-    fetch("/api/equipo")
-      .then((r) => setLoggedIn(r.ok))
-      .catch(() => setLoggedIn(false));
+    // Comprueba la sesión con reintentos: en Render gratis el primer arranque
+    // puede tardar 30-60 s, así que mientras no responda seguimos reintentando.
+    let cancelled = false;
+    let intentos = 0;
+    const chequear = async () => {
+      if (cancelled) return;
+      intentos += 1;
+      try {
+        const r = await fetch("/api/equipo", { signal: AbortSignal.timeout(15000) });
+        if (cancelled) return;
+        if (r.ok) {
+          setLoggedIn(true);
+          return;
+        }
+        if (r.status === 401) {
+          setLoggedIn(false);
+          return;
+        }
+        // 503 (config incompleta) u otro: reintenta
+      } catch {
+        // red caída o backend dormido: reintenta
+      }
+      if (!cancelled) setTimeout(chequear, Math.min(2000 * intentos, 8000));
+    };
+    chequear();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loggedIn === null) {
