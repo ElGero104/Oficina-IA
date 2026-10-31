@@ -41,11 +41,11 @@ export interface DeskSpot {
 
 // Seis escritorios en dos filas de tres.
 export const DESKS: DeskSpot[] = [
-  { id: "pipo", position: { x: -3.4, y: 0, z: -2.0 }, rotationY: 0 },
+  { id: "pipo", position: { x: -3.0, y: 0, z: -2.0 }, rotationY: 0 },
   { id: "luna", position: { x: -1.5, y: 0, z: -2.0 }, rotationY: 0 },
   { id: "bit", position: { x: 1.5, y: 0, z: -2.0 }, rotationY: 0 },
   { id: "nube", position: { x: 4.5, y: 0, z: -2.0 }, rotationY: 0 },
-  { id: "tico", position: { x: -3.4, y: 0, z: 1.8 }, rotationY: Math.PI },
+  { id: "tico", position: { x: -3.0, y: 0, z: 1.8 }, rotationY: Math.PI },
   { id: "koko", position: { x: 4.5, y: 0, z: 1.8 }, rotationY: Math.PI },
 ];
 

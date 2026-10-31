@@ -1,10 +1,24 @@
 import * as THREE from "three";
-import { PALETTE, ZONES, DESKS, BOSS_DESK, WAYPOINTS } from "../layout";
+import { PALETTE, ZONES, DESKS, BOSS_DESK, WAYPOINTS, insideOffice } from "../layout";
 import { RoundedBox, Desk, Chair, Monitor, Mug, Lamp, NamePlate, Plant } from "../Furniture/Basics";
 import { useApp } from "../../state/store";
 
 function zoneFloor(x: number, z: number, w: number, d: number, color: string) {
-  return <RoundedBox args={[w, 0.02, d]} position={[x, 0.01, z]} color={color} castShadow={false} />;
+  // Baldosas de 1x1 recortadas al perímetro real (forma en L): nada de suelo flotante.
+  const tiles: { x: number; z: number }[] = [];
+  for (let tx = x - w / 2; tx < x + w / 2; tx += 1)
+    for (let tz = z - d / 2; tz < z + d / 2; tz += 1)
+      if (insideOffice(tx + 0.5, tz + 0.5)) tiles.push({ x: tx + 0.5, z: tz + 0.5 });
+  return (
+    <group>
+      {tiles.map((t, i) => (
+        <mesh key={i} position={[t.x, 0.012, t.z]} receiveShadow>
+          <boxGeometry args={[0.98, 0.024, 0.98]} />
+          <meshStandardMaterial color={color} roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  );
 }
 
 export function Reception() {
@@ -51,14 +65,15 @@ export function DeskArea() {
     <group>
       {zoneFloor(ZONES.escritorios.x, ZONES.escritorios.z, ZONES.escritorios.w, ZONES.escritorios.d, PALETTE.pisoCuadros)}
       {DESKS.map((d) => (
-        <group key={d.id}>
-          <Desk position={[d.position.x, d.position.y, d.position.z]} rotationY={d.rotationY} />
-          {/* la silla queda detrás del escritorio y orientada hacia la pantalla */}
-          <Chair position={[d.position.x, 0, d.position.z + (d.rotationY === 0 ? 0.85 : -0.85)]} rotationY={d.rotationY + Math.PI} />
-          <Monitor position={[d.position.x, 0.82, d.position.z + (d.rotationY === 0 ? -0.15 : 0.15)]} />
-          <Mug position={[d.position.x + 0.5, 0.83, d.position.z]} color={PALETTE.menta} />
-          <Lamp position={[d.position.x - 0.6, 0.78, d.position.z + (d.rotationY === 0 ? -0.2 : 0.2)]} />
-          <NamePlate position={[d.position.x, 0.8, d.position.z + (d.rotationY === 0 ? 0.35 : -0.35)]} />
+        // Todo el puesto hereda la rotación del escritorio: monitor, taza, lámpara y placa
+        // quedan siempre面向 la silla, en ambas filas.
+        <group key={d.id} position={[d.position.x, d.position.y, d.position.z]} rotation={[0, d.rotationY, 0]}>
+          <Desk position={[0, 0, 0]} />
+          <Chair position={[0, 0, 0.85]} rotationY={Math.PI} />
+          <Monitor position={[0, 0.78, -0.15]} />
+          <Mug position={[0.5, 0.78, 0.1]} color={PALETTE.menta} />
+          <Lamp position={[-0.6, 0.74, -0.2]} />
+          <NamePlate position={[0, 0.74, 0.35]} />
         </group>
       ))}
       <mesh
