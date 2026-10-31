@@ -34,6 +34,7 @@ boss:
     - firmar
     - mirar_equipo
     - tomar_te
+    - ir_al_bano
 
 empleados:
   - id: pipo
@@ -60,6 +61,7 @@ empleados:
       objetos_escritorio: [lupa, libros]
     rutina_idle:
       - leer_con_lupa
+      - ir_al_bano
       - hojear_papeles
       - escribir_notas
   - id: luna
@@ -86,6 +88,7 @@ empleados:
       objetos_escritorio: [pluma, libreta]
     rutina_idle:
       - escribir_libreta
+      - ir_al_bano
       - teclear
       - pensar_con_pluma
   - id: bit
@@ -113,6 +116,7 @@ empleados:
       objetos_escritorio: [doble_monitor, led]
     rutina_idle:
       - teclear_rapido
+      - ir_al_bano
       - parpadear_led
       - codigo_sube
   - id: nube
@@ -139,6 +143,7 @@ empleados:
       objetos_escritorio: [tableta, paleta]
     rutina_idle:
       - dibujar_tableta
+      - ir_al_bano
       - cambiar_colores
       - evaluar_de_lejos
   - id: tico
@@ -164,6 +169,7 @@ empleados:
       objetos_escritorio: [postits, calendario]
     rutina_idle:
       - acomodar_postits
+      - ir_al_bano
       - revisar_listas
       - marcar_checks
   - id: koko
@@ -190,6 +196,7 @@ empleados:
       objetos_escritorio: [pantalla_graficos]
     rutina_idle:
       - senalar_barras
+      - ir_al_bano
       - calcular
       - anotar_cifras
 

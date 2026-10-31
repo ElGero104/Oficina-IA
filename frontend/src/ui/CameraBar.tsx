@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 import { useApp } from "../state/store";
-import { CAMERA_VIEWS } from "../scene/layout";
+import { CAMERA_VIEWS, POINTS_OF_INTEREST } from "../scene/layout";
 
 const VIEWS = [1, 2, 3, 4, 5] as const;
 
@@ -27,9 +27,21 @@ export function CameraBar() {
       <button className={styles.viewBtn} onClick={() => { setCameraView(1); setFocus(null); }} title="Centrar cámara (0)">
         🎯
       </button>
+      <span className={styles.poiSep} aria-hidden>│</span>
+      {POINTS_OF_INTEREST.map((p) => (
+        <button
+          key={p.id}
+          className={styles.poiBtn}
+          title={`Ir a ${p.label}`}
+          aria-label={`Ir a ${p.label}`}
+          onClick={() => setFocus({ target: p.target, radius: p.radius, follow: false })}
+        >
+          {p.emoji} {p.label}
+        </button>
+      ))}
       {helpVisible && (
         <span className={styles.help} onClick={dismissHelp} role="button" tabIndex={0}>
-          Arrastra para girar · Click derecho para mover · Rueda para zoom · 1-5 vistas ✕
+          Arrastra: girar · Click der.: mover · Rueda: zoom · Ctrl+rueda: fino · Ctrl+clic: acercar ahí · 1-5: vistas ✕
         </span>
       )}
     </div>

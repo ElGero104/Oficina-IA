@@ -22,6 +22,7 @@ export const ZONES = {
   cocina: { x: 5.8, z: -3.6, w: 3.6, d: 3.0 },
   impresora: { x: 5.9, z: 2.2 },
   archivero: { x: -6.0, z: 4.0 },
+  bano: { x: -5.8, z: -5.4, w: 3.6, d: 2.6 },
 } as const;
 
 export interface DeskSpot {
@@ -53,7 +54,28 @@ export const WAYPOINTS = {
   recepcion: { x: 0, y: 0, z: 4.0 },
   entradaJefa: { x: 0, y: 0, z: -3.6 },
   mesaReuniones: { x: -5.6, y: 0, z: -2.2 },
+  bano: { x: -5.8, y: 0, z: -4.6 },
 } as const;
+
+// Puntos de interés con botón propio en la barra de cámara.
+export interface PointOfInterest {
+  id: string;
+  label: string;
+  emoji: string;
+  target: [number, number, number];
+  radius: number;
+}
+
+export const POINTS_OF_INTEREST: PointOfInterest[] = [
+  { id: "recepcion", label: "Recepción", emoji: "🛎️", target: [0, 0.8, 4.4], radius: 4.5 },
+  { id: "escritorios", label: "Escritorios", emoji: "🖥️", target: [0, 0.8, -0.1], radius: 7 },
+  { id: "jefa", label: "Despacho Jefa", emoji: "👑", target: [0, 0.9, -5.4], radius: 4.5 },
+  { id: "reuniones", label: "Reuniones", emoji: "🤝", target: [-5.6, 0.8, -3.4], radius: 4.5 },
+  { id: "cocina", label: "Cocina", emoji: "☕", target: [5.8, 0.8, -3.6], radius: 4 },
+  { id: "bano", label: "Baño", emoji: "🚽", target: [-5.8, 0.8, -5.4], radius: 3.5 },
+  { id: "impresora", label: "Impresora", emoji: "🖨️", target: [5.9, 0.8, 2.2], radius: 3.5 },
+  { id: "archivero", label: "Archivero", emoji: "🗄️", target: [-6.0, 0.9, 4.0], radius: 3.5 },
+];
 
 // Vistas rápidas de cámara: 1 isométrica, 2 aérea, 3 escritorios, 4 despacho, 5 reuniones.
 export interface CameraView {

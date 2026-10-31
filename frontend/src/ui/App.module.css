@@ -60,6 +60,17 @@
   border-radius: 10px;
   cursor: pointer;
 }
+.poiSep { color: #d9b8c9; margin: 0 0.2rem; }
+.poiBtn {
+  border: 1px solid #ecd7e2;
+  background: rgba(255, 250, 252, 0.92);
+  border-radius: 10px;
+  padding: 0.28rem 0.55rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.poiBtn:hover { background: #ffe4ee; }
 .toolbar {
   display: flex;
   gap: 0.4rem;

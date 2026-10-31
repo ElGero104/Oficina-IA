@@ -41,6 +41,21 @@ export function CameraRig() {
   });
   const goal = useRef<SphericalState | null>(null);
   const dragging = useRef<{ mode: "rotate" | "pan"; x: number; y: number } | null>(null);
+  const ctrlClick = useRef<{ x: number; y: number } | null>(null);
+
+  // Proyecta un punto de pantalla al piso (y=0) y enfoca la cámara ahí.
+  const focusAtScreenPoint = (cx: number, cy: number) => {
+    const { camera, gl, size } = useThree.getState();
+    const ray = new THREE.Raycaster();
+    const ndc = new THREE.Vector2((cx / size.width) * 2 - 1, -(cy / size.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const t = -ray.ray.origin.y / ray.ray.direction.y;
+    if (!Number.isFinite(t) || t <= 0) return;
+    const p = ray.ray.origin.clone().addScaledVector(ray.ray.direction, t);
+    p.x = THREE.MathUtils.clamp(p.x, MIN_TARGET.x, MAX_TARGET.x);
+    p.z = THREE.MathUtils.clamp(p.z, MIN_TARGET.z, MAX_TARGET.z);
+    useApp.getState().setFocus({ target: [p.x, 0.8, p.z], radius: Math.max(4, state.current.radius * 0.45), follow: false });
+  };
   const pinch = useRef<{ d: number; cx: number; cy: number } | null>(null);
 
   const view = CAMERA_VIEWS[cameraView] ?? CAMERA_VIEWS[1];
@@ -88,8 +103,14 @@ export function CameraRig() {
 
     const onPointerDown = (e: PointerEvent) => {
       el.setPointerCapture(e.pointerId);
-      const pan = e.button === 2 || e.shiftKey;
-      dragging.current = { mode: pan ? "pan" : "rotate", x: e.clientX, y: e.clientY };
+      // Ctrl + clic izquierdo: no rota; marca para enfocar el punto al soltar.
+      if (e.ctrlKey && e.button === 0) {
+        dragging.current = { mode: "rotate", x: e.clientX, y: e.clientY };
+        ctrlClick.current = { x: e.clientX, y: e.clientY };
+      } else {
+        const pan = e.button === 2 || e.shiftKey;
+        dragging.current = { mode: pan ? "pan" : "rotate", x: e.clientX, y: e.clientY };
+      }
       goal.current = null;
     };
     const onPointerMove = (e: PointerEvent) => {
@@ -110,13 +131,20 @@ export function CameraRig() {
         clampTarget(s.target);
       }
     };
-    const onPointerUp = () => {
+    const onPointerUp = (e: PointerEvent) => {
+      // Si fue un Ctrl+clic sin arrastrar, enfoca el punto del piso bajo el cursor.
+      if (ctrlClick.current && Math.hypot(e.clientX - ctrlClick.current.x, e.clientY - ctrlClick.current.y) < 6) {
+        focusAtScreenPoint(e.clientX, e.clientY);
+      }
+      ctrlClick.current = null;
       dragging.current = null;
     };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const s = state.current;
-      s.radius = THREE.MathUtils.clamp(s.radius * (1 + e.deltaY * 0.001), MIN_RADIUS, MAX_RADIUS);
+      // Ctrl + rueda = zoom fino; rueda sola = zoom normal.
+      const factor = e.ctrlKey ? 0.0003 : 0.001;
+      s.radius = THREE.MathUtils.clamp(s.radius * (1 + e.deltaY * factor), MIN_RADIUS, MAX_RADIUS);
       goal.current = null;
     };
     const onContext = (e: Event) => e.preventDefault();
