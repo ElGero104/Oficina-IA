@@ -24,7 +24,7 @@ function PixelAvatar({ active, color }: { active: boolean; color: string }) {
   const skin = "#f4c7a1";
   const hair = "#3f2d20";
   return (
-    <group ref={bodyRef} position={[0, 1.15, 0.15]}>
+    <group ref={bodyRef} position={[0, 1.15, 0.15]} scale={1.4}>
       <Box position={[0, 0.45, 0]} size={[0.44, 0.5, 0.26]} color={color} />
       <Box position={[-0.26, 0.45, 0]} size={[0.1, 0.4, 0.24]} color={skin} />
       <Box position={[0.26, 0.45, 0]} size={[0.1, 0.4, 0.24]} color={skin} />
@@ -124,9 +124,17 @@ function Desk({
 
 export function CameraRig({ scene }: { scene: SceneState }) {
   const target = useMemo(() => new THREE.Vector3(...scene.camera_position), [scene.camera_position]);
+  const desk = deskFor(scene.active_agent) ?? (scene.state === "ENRUTANDO" ? BOSS : undefined);
+  const look = useMemo(() => {
+    if (desk) return new THREE.Vector3(desk.position[0], 1.1, desk.position[2]);
+    return new THREE.Vector3(0, 0.6, 1);
+  }, [desk]);
   useFrame((state, delta) => {
-    state.camera.position.lerp(target, 1 - Math.exp(-2.5 * delta));
-    state.camera.lookAt(0, 0.6, 1);
+    const cam = desk
+      ? new THREE.Vector3(desk.position[0], 2.4, desk.position[2] - 3.2)
+      : target;
+    state.camera.position.lerp(cam, 1 - Math.exp(-2.5 * delta));
+    state.camera.lookAt(look);
   });
   return null;
 }
