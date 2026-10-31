@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/storage.ts","./src/scene/CameraRig.tsx","./src/scene/CutawayWalls.tsx","./src/scene/Office3D.tsx","./src/scene/layout.ts","./src/scene/Furniture/Basics.tsx","./src/scene/zones/Zones.tsx","./src/state/store.ts","./src/ui/CameraBar.tsx","./src/ui/Login.tsx"],"version":"5.6.3"}
