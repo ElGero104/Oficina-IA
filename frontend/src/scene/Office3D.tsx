@@ -1,7 +1,7 @@
 import { Suspense, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Sky } from "@react-three/drei";
-import { OFFICE, PALETTE } from "./layout";
+import { OFFICE, PALETTE, insideOffice } from "./layout";
 import { CameraRig } from "./CameraRig";
 import { CutawayWalls } from "./CutawayWalls";
 import { Reception, DeskArea, BossOffice, MeetingRoom, Kitchen, Bathroom, PrinterAndArchive } from "./zones/Zones";
@@ -12,7 +12,7 @@ function Floor() {
     const arr: { x: number; z: number; alt: boolean }[] = [];
     for (let x = -OFFICE.width / 2; x < OFFICE.width / 2; x += 1)
       for (let z = -OFFICE.depth / 2; z < OFFICE.depth / 2; z += 1)
-        arr.push({ x: x + 0.5, z: z + 0.5, alt: (x + z) % 2 === 0 });
+        if (insideOffice(x + 0.5, z + 0.5)) arr.push({ x: x + 0.5, z: z + 0.5, alt: (x + z) % 2 === 0 });
     return arr;
   }, []);
   return (

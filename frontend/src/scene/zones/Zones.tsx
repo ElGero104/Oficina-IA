@@ -120,32 +120,35 @@ export function MeetingRoom() {
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
       {/* tabique de vidrio este con puerta */}
-      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z - 0.9]}>
-        <boxGeometry args={[0.05, 3, 1.4]} />
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z - 0.7]}>
+        <boxGeometry args={[0.05, 3, 1.0]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
       </mesh>
-      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z + 0.9]}>
-        <boxGeometry args={[0.05, 3, 1.4]} />
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z + 0.7]}>
+        <boxGeometry args={[0.05, 3, 1.0]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
       </mesh>
       {/* puerta de la sala de reuniones */}
       <mesh position={[z.x + z.w / 2 + 0.02, 1.15, z.z]}>
-        <boxGeometry args={[0.06, 2.3, 1.0]} />
+        <boxGeometry args={[0.06, 2.3, 0.9]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.55} roughness={0.1} />
       </mesh>
-      <RoundedBox args={[0.12, 0.08, 1.1]} position={[z.x + z.w / 2 + 0.02, 2.36, z.z]} color={PALETTE.maderaOscura} />
+      <RoundedBox args={[0.12, 0.08, 1.0]} position={[z.x + z.w / 2 + 0.02, 2.36, z.z]} color={PALETTE.maderaOscura} />
       {/* mesa larga */}
       <RoundedBox args={[3.2, 0.08, 1.2]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
       <RoundedBox args={[0.1, 0.74, 1.0]} position={[z.x - 1.4, 0.37, z.z]} color={PALETTE.maderaOscura} />
       <RoundedBox args={[0.1, 0.74, 1.0]} position={[z.x + 1.4, 0.37, z.z]} color={PALETTE.maderaOscura} />
+      {/* sillas alrededor de la mesa, todas mirando al centro */}
       {[-1.1, -0.35, 0.35, 1.1].map((dx, i) => (
-        <Chair key={i} position={[z.x + dx, 0, z.z - 0.95]} rotationY={0} />
+        <Chair key={i} position={[z.x + dx, 0, z.z - 0.9]} rotationY={0} />
       ))}
-      {[-1.1, 0.35].map((dx, i) => (
-        <Chair key={`b${i}`} position={[z.x + dx, 0, z.z + 0.95]} rotationY={Math.PI} />
+      {[-0.7, 0.7].map((dx, i) => (
+        <Chair key={`b${i}`} position={[z.x + dx, 0, z.z + 0.9]} rotationY={Math.PI} />
       ))}
-      {/* pizarra */}
-      <RoundedBox args={[2.2, 1.1, 0.05]} position={[z.x, 1.8, z.z - z.d / 2 + 0.05]} color="#ffffff" />
+      <Chair position={[z.x - 1.75, 0, z.z]} rotationY={Math.PI / 2} />
+      <Chair position={[z.x + 1.75, 0, z.z]} rotationY={-Math.PI / 2} />
+      {/* pizarra en la pared oeste del ala */}
+      <RoundedBox args={[2.2, 1.1, 0.05]} position={[z.x - z.w / 2 + 0.05, 1.8, z.z]} color="#ffffff" />
       {/* proyector */}
       <mesh position={[z.x, 2.9, z.z]}>
         <cylinderGeometry args={[0.12, 0.12, 0.12, 12]} />
@@ -202,32 +205,38 @@ export function Bathroom() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, "#d8ecf5")}
-      {/* tabique sur con puerta */}
+      {/* tabiques: norte (pared exterior ya existe), este y sur con puerta al este */}
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.5, z.z - 0.6]}>
+        <boxGeometry args={[0.05, 3, 1.2]} />
+        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
+      </mesh>
       <mesh position={[z.x - 0.5, 1.5, z.z + z.d / 2 + 0.02]}>
-        <boxGeometry args={[2.2, 3, 0.05]} />
+        <boxGeometry args={[1.4, 3, 0.05]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
       </mesh>
       <mesh position={[z.x + 0.5, 1.5, z.z + z.d / 2 + 0.02]}>
-        <boxGeometry args={[2.2, 3, 0.05]} />
+        <boxGeometry args={[1.4, 3, 0.05]} />
         <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
       </mesh>
-      {/* puerta del baño */}
-      <mesh position={[z.x, 1.15, z.z + z.d / 2 + 0.02]}>
-        <boxGeometry args={[0.9, 2.3, 0.06]} />
+      {/* puerta del baño (en el tabique este) */}
+      <mesh position={[z.x + z.w / 2 + 0.02, 1.15, z.z + 0.6]}>
+        <boxGeometry args={[0.06, 2.3, 0.9]} />
         <meshStandardMaterial color={PALETTE.crema} roughness={0.4} />
       </mesh>
-      <mesh position={[z.x + 0.32, 1.15, z.z + z.d / 2 + 0.07]}>
+      <mesh position={[z.x + z.w / 2 + 0.08, 1.15, z.z + 0.95]}>
         <sphereGeometry args={[0.05, 8, 8]} />
         <meshStandardMaterial color="#ffd166" metalness={0.7} roughness={0.3} />
       </mesh>
-      {/* lavabo */}
-      <RoundedBox args={[0.7, 0.75, 0.45]} position={[z.x - 1.1, 0.375, z.z - z.d / 2 + 0.4]} color="#ffffff" />
-      <mesh position={[z.x - 1.1, 0.78, z.z - z.d / 2 + 0.4]}>
+      {/* lavabo contra la pared norte */}
+      <RoundedBox args={[0.7, 0.75, 0.45]} position={[z.x - 1.1, 0.375, z.z - z.d / 2 + 0.35]} color="#ffffff" />
+      <mesh position={[z.x - 1.1, 0.79, z.z - z.d / 2 + 0.35]}>
         <cylinderGeometry args={[0.22, 0.18, 0.1, 14]} />
         <meshStandardMaterial color="#eef7fb" roughness={0.3} />
       </mesh>
-      {/* inodoro kawaii */}
-      <group position={[z.x + 1.1, 0, z.z - z.d / 2 + 0.5]}>
+      {/* espejo */}
+      <RoundedBox args={[0.8, 0.6, 0.04]} position={[z.x - 1.1, 1.7, z.z - z.d / 2 + 0.06]} color="#cfe8f5" />
+      {/* inodoro kawaii en la esquina oeste */}
+      <group position={[z.x - 1.2, 0, z.z + 0.3]}>
         <mesh castShadow>
           <cylinderGeometry args={[0.22, 0.26, 0.4, 14]} />
           <meshStandardMaterial color="#ffffff" roughness={0.35} />
@@ -238,9 +247,7 @@ export function Bathroom() {
         </mesh>
         <RoundedBox args={[0.3, 0.5, 0.08]} position={[0, 0.45, -0.32]} color={PALETTE.cristal} />
       </group>
-      {/* espejo */}
-      <RoundedBox args={[0.8, 0.6, 0.04]} position={[z.x - 1.1, 1.7, z.z - z.d / 2 + 0.05]} color="#cfe8f5" />
-      <Plant position={[z.x + 1.2, 0, z.z + 0.9]} scale={0.7} />
+      <Plant position={[z.x + 1.2, 0, z.z - 0.8]} scale={0.7} />
     </group>
   );
 }
@@ -259,7 +266,7 @@ export function PrinterAndArchive() {
       </group>
       {/* archivero: clic abre el historial (fase 5) */}
       <group
-        position={[ZONES.archivero.x, 0, ZONES.archivero.z]}
+        position={[ZONES.archivero.x, 0, ZONES.archivero.z - 0.9]}
         onClick={() => useApp.getState().setTab("historial")}
       >
         <RoundedBox args={[0.8, 1.8, 0.5]} position={[0, 0.9, 0]} color={PALETTE.maderaOscura} />
