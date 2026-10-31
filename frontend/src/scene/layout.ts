@@ -26,6 +26,7 @@ export const ZONES = {
   recepcion: { x: 3.0, z: 6.6, w: 8, d: 2.4 },
   escritorios: { x: 0.5, z: -0.4, w: 15, d: 6.0 },
   despachoJefa: { x: 2.0, z: -6.7, w: 8, d: 2.5 },
+  reuniones: { x: -8.9, z: 1.0, w: 4.2, d: 4.4 },
   bano: { x: -9.2, z: -6.2, w: 3.6, d: 3.0 },
   cocina: { x: 8.8, z: -5.4, w: 4.2, d: 3.2 },
   descanso: { x: 8.8, z: 0.6, w: 4.4, d: 3.6 },
@@ -64,6 +65,7 @@ export const WAYPOINTS = {
   recepcion: { x: 3.0, y: 0, z: 5.8 },
   entradaJefa: { x: 2.0, y: 0, z: -5.3 },
   bano: { x: -7.4, y: 0, z: -6.2 },
+  mesaReuniones: { x: -8.9, y: 0, z: 1.0 },
   descanso: { x: 6.8, y: 0, z: 0.6 },
 } as const;
 
@@ -79,7 +81,7 @@ export const CAMERA_VIEWS: Record<number, CameraView> = {
   2: { name: "aérea", position: { x: 0.1, y: 22, z: 0.1 }, target: { x: 0, y: 0, z: 0 } },
   3: { name: "escritorios", position: { x: 0.5, y: 4.0, z: 9.0 }, target: { x: 0.5, y: 0.8, z: -1 } },
   4: { name: "despacho de la Jefa", position: { x: 6.5, y: 3.0, z: -2.6 }, target: { x: 2.0, y: 0.9, z: -6.8 } },
-  5: { name: "recepción", position: { x: 7.5, y: 2.8, z: 3.4 }, target: { x: 3.0, y: 0.8, z: 6.4 } },
+  5: { name: "sala de reuniones", position: { x: -4.6, y: 3.0, z: 1.6 }, target: { x: -8.9, y: 0.8, z: 1.0 } },
 };
 
 // Puntos de interés con botón propio en la barra de cámara.
@@ -95,6 +97,7 @@ export const POINTS_OF_INTEREST: PointOfInterest[] = [
   { id: "recepcion", label: "Recepción", emoji: "🛎️", target: [3.0, 0.8, 6.4], radius: 5.5 },
   { id: "escritorios", label: "Escritorios", emoji: "🖥️", target: [0.5, 0.8, -0.4], radius: 10 },
   { id: "jefa", label: "Despacho Jefa", emoji: "👑", target: [2.0, 0.9, -6.8], radius: 5 },
+  { id: "reuniones", label: "Reuniones", emoji: "🤝", target: [-8.9, 0.8, 1.0], radius: 5.5 },
   { id: "cocina", label: "Cocina", emoji: "☕", target: [8.8, 0.8, -5.4], radius: 5 },
   { id: "descanso", label: "Descanso", emoji: "🛋️", target: [8.8, 0.8, 0.6], radius: 5 },
   { id: "bano", label: "Baño", emoji: "🚽", target: [-9.2, 0.8, -6.2], radius: 4 },

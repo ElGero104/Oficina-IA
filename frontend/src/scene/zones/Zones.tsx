@@ -109,6 +109,37 @@ export function BossOffice() {
   );
 }
 
+export function MeetingRoom() {
+  const z = ZONES.reuniones;
+  return (
+    <group>
+      {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
+      {/* mesa grande centrada con 8 sillas mirando al centro */}
+      <RoundedBox args={[3.4, 0.08, 1.6]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
+      <RoundedBox args={[0.1, 0.74, 1.4]} position={[z.x - 1.5, 0.37, z.z]} color={PALETTE.maderaOscura} />
+      <RoundedBox args={[0.1, 0.74, 1.4]} position={[z.x + 1.5, 0.37, z.z]} color={PALETTE.maderaOscura} />
+      {[-1.2, -0.4, 0.4, 1.2].map((dx, i) => (
+        <Chair key={i} position={[z.x + dx, 0, z.z - 1.1]} rotationY={0} />
+      ))}
+      {[-0.8, 0.8].map((dx, i) => (
+        <Chair key={`b${i}`} position={[z.x + dx, 0, z.z + 1.1]} rotationY={Math.PI} />
+      ))}
+      <Chair position={[z.x - 1.9, 0, z.z]} rotationY={Math.PI / 2} />
+      <Chair position={[z.x + 1.9, 0, z.z]} rotationY={-Math.PI / 2} />
+      {/* pizarra en la pared oeste */}
+      <RoundedBox args={[2.6, 1.2, 0.05]} position={[z.x - z.w / 2 + 0.05, 1.9, z.z]} color="#ffffff" />
+      {/* proyector */}
+      <mesh position={[z.x, 2.9, z.z]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.12, 12]} />
+        <meshStandardMaterial color="#2e2a3a" />
+      </mesh>
+      {/* plantas decorativas */}
+      <Plant position={[z.x - 1.8, 0, z.z + 1.8]} scale={0.8} />
+      <Plant position={[z.x + 1.8, 0, z.z - 1.8]} scale={0.8} />
+    </group>
+  );
+}
+
 export function Bathroom() {
   const z = ZONES.bano;
   return (

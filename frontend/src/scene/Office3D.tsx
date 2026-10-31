@@ -4,7 +4,7 @@ import { ContactShadows, Sky } from "@react-three/drei";
 import { OFFICE, PALETTE, insideOffice } from "./layout";
 import { CameraRig } from "./CameraRig";
 import { CutawayWalls } from "./CutawayWalls";
-import { Reception, DeskArea, BossOffice, Kitchen, Lounge, Bathroom, PrinterAndArchive } from "./zones/Zones";
+import { Reception, DeskArea, BossOffice, MeetingRoom, Kitchen, Lounge, Bathroom, PrinterAndArchive } from "./zones/Zones";
 import { DecorSet } from "./Furniture/Decor";
 import { InteriorWalls } from "./InteriorWalls";
 import { useApp } from "../state/store";
@@ -63,6 +63,7 @@ export default function Office3D() {
         <Reception />
         <DeskArea />
         <BossOffice />
+        <MeetingRoom />
         <Kitchen />
         <Lounge />
         <Bathroom />
