@@ -114,18 +114,18 @@ export function MeetingRoom() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
-      {/* mesa centrada con 8 sillas alrededor, todo dentro de la sala */}
-      <RoundedBox args={[3.0, 0.08, 1.4]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
-      <RoundedBox args={[0.1, 0.74, 1.2]} position={[z.x - 1.3, 0.37, z.z]} color={PALETTE.maderaOscura} />
-      <RoundedBox args={[0.1, 0.74, 1.2]} position={[z.x + 1.3, 0.37, z.z]} color={PALETTE.maderaOscura} />
-      {[-1.05, -0.35, 0.35, 1.05].map((dx, i) => (
-        <Chair key={i} position={[z.x + dx, 0, z.z - 1.05]} rotationY={0} />
+      {/* mesa VERTICAL (a lo largo de Z) con 8 sillas alrededor, dentro de la sala */}
+      <RoundedBox args={[1.4, 0.08, 3.0]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
+      <RoundedBox args={[1.2, 0.74, 0.1]} position={[z.x, 0.37, z.z - 1.3]} color={PALETTE.maderaOscura} />
+      <RoundedBox args={[1.2, 0.74, 0.1]} position={[z.x, 0.37, z.z + 1.3]} color={PALETTE.maderaOscura} />
+      {[-1.05, -0.35, 0.35, 1.05].map((dz, i) => (
+        <Chair key={i} position={[z.x - 1.05, 0, z.z + dz]} rotationY={Math.PI / 2} />
       ))}
-      {[-0.7, 0.7].map((dx, i) => (
-        <Chair key={`b${i}`} position={[z.x + dx, 0, z.z + 1.05]} rotationY={Math.PI} />
+      {[-0.7, 0.7].map((dz, i) => (
+        <Chair key={`b${i}`} position={[z.x + 1.05, 0, z.z + dz]} rotationY={-Math.PI / 2} />
       ))}
-      <Chair position={[z.x - 1.7, 0, z.z]} rotationY={Math.PI / 2} />
-      <Chair position={[z.x + 1.7, 0, z.z]} rotationY={-Math.PI / 2} />
+      <Chair position={[z.x, 0, z.z - 1.7]} rotationY={0} />
+      <Chair position={[z.x, 0, z.z + 1.7]} rotationY={Math.PI} />
       {/* pizarra en la pared oeste */}
       <RoundedBox args={[2.6, 1.2, 0.05]} position={[z.x - z.w / 2 + 0.05, 1.9, z.z]} color="#ffffff" />
       {/* proyector */}
