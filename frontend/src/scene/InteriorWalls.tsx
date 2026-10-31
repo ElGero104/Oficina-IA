@@ -65,11 +65,10 @@ export function InteriorWalls() {
   // con puertas en z=-3.0 (cocina) y z=1.5 (descanso), ambas despejadas.
   return (
     <group>
-      {/* tabique bajo de vidrio entre la sala de reuniones y el open space */}
-            {/* pared este SÓLIDA de la sala de reuniones, con puerta en z=1.3 */}
-      <WallSeg axis="x" fixed={-5.6} from={-4.7} to={0.75} />
-      <WallSeg axis="x" fixed={-5.6} from={1.85} to={8} />
-      <Door axis="x" fixed={-5.6} at={1.3} w={1.1} />
+      {/* pared este SÓLIDA (vertical, x=-5.6) de la sala de reuniones, con puerta en z=1.3 */}
+      <WallSeg axis="z" fixed={-5.6} from={-4.7} to={0.75} />
+      <WallSeg axis="z" fixed={-5.6} from={1.85} to={4.1} />
+      <Door axis="z" fixed={-5.6} at={1.3} w={1.1} />
       {/* muro del despacho (norte del open space) */}
       <WallSeg axis="x" fixed={-5.4} from={-11} to={1.4} />
       <WallSeg axis="x" fixed={-5.4} from={2.6} to={11} />
