@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { PALETTE, ZONES, DESKS, BOSS_DESK, WAYPOINTS, insideOffice } from "../layout";
 import { RoundedBox, Desk, Chair, Monitor, Mug, Lamp, NamePlate, Plant } from "../Furniture/Basics";
 import { useApp } from "../../state/store";
@@ -17,59 +16,6 @@ function zoneFloor(x: number, z: number, w: number, d: number, color: string) {
           <meshStandardMaterial color={color} roughness={0.9} />
         </mesh>
       ))}
-    </group>
-  );
-}
-
-const glassMat = new THREE.MeshStandardMaterial({
-  color: PALETTE.cristal, transparent: true, opacity: 0.3, roughness: 0.1, side: THREE.DoubleSide,
-});
-const doorMat = new THREE.MeshStandardMaterial({
-  color: PALETTE.crema, roughness: 0.4, side: THREE.DoubleSide,
-});
-
-// Tabique de vidrio con hueco de puerta centrado en `doorAt` (coordenada a lo largo del tabique).
-function GlassPartition(props: {
-  axis: "x" | "z";
-  fixed: number;
-  center: number;
-  length: number;
-  doorW?: number;
-  doorAt?: number;
-}) {
-  const { axis, fixed, center, length } = props;
-  const doorW = props.doorW ?? 1.0;
-  const doorAt = props.doorAt ?? center;
-  const half = length / 2;
-  const a = center - half;
-  const b = center + half;
-  const d0 = doorAt - doorW / 2;
-  const d1 = doorAt + doorW / 2;
-  const seg = (from: number, to: number, key: string) => {
-    const len = to - from;
-    if (len <= 0.01) return null;
-    const mid = (from + to) / 2;
-    return axis === "z"
-      ? <mesh key={key} position={[fixed, 1.5, mid]} material={glassMat}><boxGeometry args={[0.05, 3, len]} /></mesh>
-      : <mesh key={key} position={[mid, 1.5, fixed]} material={glassMat}><boxGeometry args={[len, 3, 0.05]} /></mesh>;
-  };
-  return (
-    <group>
-      {seg(a, d0, "a")}
-      {seg(d1, b, "b")}
-      {/* hoja de puerta sólida, desplazada para no hacer z-fighting */}
-      <mesh
-        position={axis === "z" ? [fixed + 0.045, 1.15, doorAt] : [doorAt, 1.15, fixed + 0.045]}
-        material={doorMat}
-      >
-        <boxGeometry args={axis === "z" ? [0.04, 2.3, doorW] : [doorW, 2.3, 0.04]} />
-      </mesh>
-      <mesh
-        position={axis === "z" ? [fixed + 0.08, 1.15, doorAt + doorW / 2 - 0.12] : [doorAt + doorW / 2 - 0.12, 1.15, fixed + 0.08]}
-      >
-        <sphereGeometry args={[0.05, 8, 8]} />
-        <meshStandardMaterial color="#ffd166" metalness={0.7} roughness={0.3} />
-      </mesh>
     </group>
   );
 }
@@ -145,8 +91,6 @@ export function BossOffice() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.lila)}
-      {/* tabique frontal con puerta despejada (centrada en x = b.x) */}
-      <GlassPartition axis="z" fixed={-4.45} center={0} length={z.w} doorW={1.2} doorAt={b.position.x} />
       {/* escritorio grande */}
       <RoundedBox args={[2.6, 0.1, 1.2]} position={[b.position.x, 0.78, b.position.z]} color={PALETTE.madera} />
       <RoundedBox args={[0.1, 0.78, 1.1]} position={[b.position.x - 1.2, 0.39, b.position.z]} color={PALETTE.maderaOscura} />
@@ -170,8 +114,6 @@ export function MeetingRoom() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.menta)}
-      {/* tabique este (pared compartida con el open space) con puerta al sur, despejada de escritorios */}
-      <GlassPartition axis="z" fixed={z.x + z.w / 2} center={z.z} length={z.d} doorW={1.0} doorAt={z.z + 1.2} />
       {/* mesa larga centrada */}
       <RoundedBox args={[3.0, 0.08, 1.4]} position={[z.x, 0.74, z.z]} color={PALETTE.madera} />
       <RoundedBox args={[0.1, 0.74, 1.2]} position={[z.x - 1.3, 0.37, z.z]} color={PALETTE.maderaOscura} />
@@ -201,13 +143,6 @@ export function Bathroom() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, "#d8ecf5")}
-      {/* tabique este con puerta al norte, despejada */}
-      <GlassPartition axis="z" fixed={z.x + z.w / 2} center={z.z} length={z.d} doorW={0.9} doorAt={z.z - 0.8} />
-      {/* tabique sur completo */}
-      <mesh position={[z.x, 1.5, z.z + z.d / 2 + 0.025]}>
-        <boxGeometry args={[z.w, 3, 0.05]} />
-        <meshStandardMaterial color={PALETTE.cristal} transparent opacity={0.3} roughness={0.1} />
-      </mesh>
       {/* lavabo contra la pared norte */}
       <RoundedBox args={[0.7, 0.75, 0.45]} position={[z.x - 1.0, 0.375, z.z - z.d / 2 + 0.35]} color="#ffffff" />
       <mesh position={[z.x - 1.0, 0.79, z.z - z.d / 2 + 0.35]}>
@@ -238,8 +173,6 @@ export function Kitchen() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.crema)}
-      {/* tabique oeste con puerta despejada (lejos de la sala de descanso) */}
-      <GlassPartition axis="z" fixed={z.x - z.w / 2} center={z.z} length={z.d} doorW={1.0} doorAt={z.z + 0.9} />
       {/* mesón con cafetera */}
       <RoundedBox args={[3.2, 0.9, 0.8]} position={[z.x, 0.45, z.z + 1.0]} color={PALETTE.madera} />
       <mesh position={[z.x - 0.9, 1.05, z.z + 1.0]} castShadow>
@@ -267,8 +200,6 @@ export function Lounge() {
   return (
     <group>
       {zoneFloor(z.x, z.z, z.w, z.d, PALETTE.rosaSuave)}
-      {/* tabique oeste con puerta despejada */}
-      <GlassPartition axis="z" fixed={z.x - z.w / 2} center={z.z} length={z.d} doorW={1.0} doorAt={z.z - 0.9} />
       {/* sofá y mesa de centro */}
       <RoundedBox args={[1.6, 0.45, 0.8]} position={[z.x - 0.6, 0.22, z.z + 1.0]} color={PALETTE.rosa} />
       <RoundedBox args={[1.6, 0.4, 0.14]} position={[z.x - 0.6, 0.5, z.z + 0.58]} color={PALETTE.rosa} />

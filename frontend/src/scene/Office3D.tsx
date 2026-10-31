@@ -5,6 +5,8 @@ import { OFFICE, PALETTE, insideOffice } from "./layout";
 import { CameraRig } from "./CameraRig";
 import { CutawayWalls } from "./CutawayWalls";
 import { Reception, DeskArea, BossOffice, MeetingRoom, Kitchen, Lounge, Bathroom, PrinterAndArchive } from "./zones/Zones";
+import { DecorSet } from "./Furniture/Decor";
+import { InteriorWalls } from "./InteriorWalls";
 import { useApp } from "../state/store";
 
 function Floor() {
@@ -56,6 +58,8 @@ export default function Office3D() {
         <Sky sunPosition={[8, 12, 6]} distance={50} />
         <Floor />
         <CutawayWalls />
+        <InteriorWalls />
+        <DecorSet />
         <Reception />
         <DeskArea />
         <BossOffice />

@@ -43,12 +43,12 @@ export interface DeskSpot {
 // Seis escritorios: 4 en la fila de atrás, 2 adelante. Ninguno tapa puertas:
 // la puerta de reuniones queda en z=-4.2 y la de descanso en z=0.8 (este), fuera del paso.
 export const DESKS: DeskSpot[] = [
-  { id: "pipo", position: { x: -4.2, y: 0, z: -2.2 }, rotationY: 0 },
-  { id: "luna", position: { x: -1.4, y: 0, z: -2.2 }, rotationY: 0 },
-  { id: "bit", position: { x: 1.4, y: 0, z: -2.2 }, rotationY: 0 },
-  { id: "nube", position: { x: 4.2, y: 0, z: -2.2 }, rotationY: 0 },
-  { id: "tico", position: { x: -4.2, y: 0, z: 1.8 }, rotationY: Math.PI },
-  { id: "koko", position: { x: 4.2, y: 0, z: 1.8 }, rotationY: Math.PI },
+  { id: "pipo", position: { x: -4.0, y: 0, z: -2.4 }, rotationY: 0 },
+  { id: "luna", position: { x: -1.3, y: 0, z: -2.4 }, rotationY: 0 },
+  { id: "bit", position: { x: 1.4, y: 0, z: -2.4 }, rotationY: 0 },
+  { id: "nube", position: { x: 4.0, y: 0, z: -2.4 }, rotationY: 0 },
+  { id: "tico", position: { x: -2.6, y: 0, z: 1.9 }, rotationY: Math.PI },
+  { id: "koko", position: { x: 2.6, y: 0, z: 1.9 }, rotationY: Math.PI },
 ];
 
 export const BOSS_DESK: DeskSpot = {
