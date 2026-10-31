@@ -140,10 +140,13 @@ def tab_chat(agents, memory: Memory, board: MissionsBoard, lib: Library) -> None
         with st.chat_message(msg["rol"]):
             st.markdown(msg["contenido"])
 
+    precargado = st.session_state.pop("pedido_precargado", "")
     pedido = st.chat_input(
-        "Pídele algo real a la oficina… o usa /equipo, /hoy, /misión, /reunión, /resumen, /contratar, /despedir",
-        value=st.session_state.pop("pedido_precargado", ""),
+        "Pídele algo real a la oficina… o usa /equipo, /hoy, /misión, /reunión, /resumen, /contratar, /despedir"
+        + (f" — plantilla: {precargado[:40]}…" if precargado else "")
     )
+    if precargado and not pedido:
+        pedido = precargado
     if not pedido:
         return
 
