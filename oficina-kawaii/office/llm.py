@@ -58,7 +58,7 @@ class MistralClient:
     """Envoltorio simple sobre el SDK oficial de Mistral."""
 
     def __init__(self, api_key: str | None = None, timeout: int = DEFAULT_TIMEOUT_S) -> None:
-        self._client = Mistral(api_key=api_key or _load_api_key(), timeout=timeout)
+        self._client = Mistral(api_key=api_key or _load_api_key(), timeout_ms=timeout * 1000)
 
     def _complete_once(
         self,
