@@ -35,24 +35,20 @@ export function CutawayWalls() {
     fade(mats.w, dir.x);
   });
 
-  const { width: W, depth: D, wallHeight: H, wallThickness: T, notchX } = OFFICE;
+  const { width: W, depth: D, wallHeight: H, wallThickness: T } = OFFICE;
   return (
     <group>
       {/* pared norte (fondo, z=-D/2) */}
       <mesh position={[0, H / 2, -D / 2 - T / 2]} material={mats.n} castShadow={!lightMode} receiveShadow>
         <boxGeometry args={[W + T * 2, H, T]} />
       </mesh>
-      {/* pared sur (frente, z=+D/2): tramo oeste solo hasta la muesca en L */}
-      <mesh position={[(notchX + W / 2) / 2, H / 2, D / 2 + T / 2]} material={mats.s} castShadow={!lightMode} receiveShadow>
-        <boxGeometry args={[W / 2 + notchX + T * 2, H, T]} />
+      {/* pared sur (frente, z=+D/2) */}
+      <mesh position={[0, H / 2, D / 2 + T / 2]} material={mats.s} castShadow={!lightMode} receiveShadow>
+        <boxGeometry args={[W + T * 2, H, T]} />
       </mesh>
-      {/* pared oeste tramo sur (fondo, x=-W/2) */}
-      <mesh position={[-W / 2 - T / 2, H / 2, -D / 4]} material={mats.w} castShadow={!lightMode} receiveShadow>
-        <boxGeometry args={[T, H, D / 2]} />
-      </mesh>
-      {/* pared oeste tramo norte: la muesca desplaza el muro a x=notchX para z>0 */}
-      <mesh position={[notchX - T / 2, H / 2, D / 4]} material={mats.w} castShadow={!lightMode} receiveShadow>
-        <boxGeometry args={[T, H, D / 2]} />
+      {/* pared oeste (x=-W/2) */}
+      <mesh position={[-W / 2 - T / 2, H / 2, 0]} material={mats.w} castShadow={!lightMode} receiveShadow>
+        <boxGeometry args={[T, H, D]} />
       </mesh>
       {/* pared este (x=+W/2) */}
       <mesh position={[W / 2 + T / 2, H / 2, 0]} material={mats.e} castShadow={!lightMode} receiveShadow>

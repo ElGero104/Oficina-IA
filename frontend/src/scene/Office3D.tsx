@@ -4,7 +4,7 @@ import { ContactShadows, Sky } from "@react-three/drei";
 import { OFFICE, PALETTE, insideOffice } from "./layout";
 import { CameraRig } from "./CameraRig";
 import { CutawayWalls } from "./CutawayWalls";
-import { Reception, DeskArea, BossOffice, MeetingRoom, Kitchen, Bathroom, PrinterAndArchive } from "./zones/Zones";
+import { Reception, DeskArea, BossOffice, MeetingRoom, Kitchen, Lounge, Bathroom, PrinterAndArchive } from "./zones/Zones";
 import { useApp } from "../state/store";
 
 function Floor() {
@@ -47,10 +47,10 @@ export default function Office3D() {
         color="#fff0e0"
         castShadow={!lightMode}
         shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-12}
-        shadow-camera-right={12}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-camera-left={-14}
+        shadow-camera-right={14}
+        shadow-camera-top={11}
+        shadow-camera-bottom={-11}
       />
       <Suspense fallback={null}>
         <Sky sunPosition={[8, 12, 6]} distance={50} />
@@ -61,9 +61,10 @@ export default function Office3D() {
         <BossOffice />
         <MeetingRoom />
         <Kitchen />
+        <Lounge />
         <Bathroom />
         <PrinterAndArchive />
-        <ContactShadows position={[0, 0.06, 0]} opacity={0.35} scale={20} blur={2.2} far={6} />
+        <ContactShadows position={[0, 0.06, 0]} opacity={0.35} scale={24} blur={2.2} far={7} />
       </Suspense>
     </Canvas>
   );
