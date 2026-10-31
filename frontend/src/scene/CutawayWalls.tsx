@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { OFFICE, PALETTE, insideOffice } from "./layout";
+import { OFFICE, PALETTE } from "./layout";
 import { useApp } from "../state/store";
 
 // Paredes inteligentes: las que quedan entre la cámara y el centro se vuelven
@@ -63,4 +63,3 @@ export function CutawayWalls() {
 }
 
 export { insideOffice };
-}
