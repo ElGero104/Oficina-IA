@@ -90,9 +90,74 @@ def barra_superior(memory: Memory, board: MissionsBoard, agents) -> None:
         st.markdown("</div>", unsafe_allow_html=True)
 
 
+COLORES_PIEL = ["#f2c79b", "#e8b184", "#d9a066", "#c98d5e", "#f7d7b5"]
+COLORES_ROPA = ["#5d9c59", "#4f7fc9", "#c94f4f", "#d8b24a", "#9b59b6", "#e67e22", "#1abc9c"]
+
+FRASES_POR_ESTADO = {
+    "💤 esperando": ["¡Hola! Avísame cuando necesites algo 👋", "Aquí espero mis órdenes ☕", "¿En qué te ayudo hoy? 😊"],
+    "⌨️ trabajando": ["Estoy trabajando en ello… ⌨️", "Dame un segundo, casi listo 💪", "Procesando tu pedido… 🔄"],
+    "✅ entregó": ["¡Listo! Ya entregué mi parte ✅", "¡Hecho! ¿Te sirve así? 🎉", "Entregable entregado 👌"],
+}
+
+
+def _color(agent_id: str, paleta: list[str]) -> str:
+    return paleta[abs(hash(agent_id)) % len(paleta)]
+
+
+def sprite_html(agent) -> str:
+    """Sprite pixel-art construido con box-shadow (sin imágenes externas)."""
+    piel = _color(agent.id + "p", COLORES_PIEL)
+    ropa = _color(agent.id + "r", COLORES_ROPA)
+    return f"""
+    <div class="sprite" style="
+      width:8px;height:8px;position:absolute;left:20px;top:0;
+      box-shadow:
+        0 0 0 {piel}, 8px 0 0 {piel}, 16px 0 0 {piel}, 24px 0 0 {piel}, 32px 0 0 {piel},
+        0 8px 0 {piel}, 8px 8px 0 #2b1d12, 16px 8px 0 {piel}, 24px 8px 0 #2b1d12, 32px 8px 0 {piel}, 40px 8px 0 {piel},
+        0 16px 0 {piel}, 8px 16px 0 {piel}, 16px 16px 0 {piel}, 24px 16px 0 {piel}, 32px 16px 0 {piel}, 40px 16px 0 {piel},
+        0 24px 0 {ropa}, 8px 24px 0 {ropa}, 16px 24px 0 {ropa}, 24px 24px 0 {ropa}, 32px 24px 0 {ropa}, 40px 24px 0 {ropa},
+        0 32px 0 {ropa}, 8px 32px 0 {ropa}, 16px 32px 0 {ropa}, 24px 32px 0 {ropa}, 32px 32px 0 {ropa}, 40px 32px 0 {ropa},
+        0 40px 0 {ropa}, 8px 40px 0 {ropa}, 16px 40px 0 {ropa}, 24px 40px 0 {ropa}, 32px 40px 0 {ropa}, 40px 40px 0 {ropa},
+        8px 48px 0 #2b1d12, 16px 48px 0 #2b1d12, 24px 48px 0 #2b1d12, 32px 48px 0 #2b1d12;
+    "></div>"""
+
+
+def escena_oficina(empleados) -> None:
+    """Escena pixel-art retro: pared de ladrillo, ventanas, muebles y personajes."""
+    st.markdown('<div class="escena">', unsafe_allow_html=True)
+    st.markdown('<div class="ventana v1"></div><div class="ventana v2"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="estanteria" style="left:44%"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="sofa" style="right:8%"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="planta" style="left:2%"></div><div class="planta" style="right:26%"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="suelo"></div>', unsafe_allow_html=True)
+    total = len(empleados)
+    for i, desk_left in enumerate([10, 26, 58]):
+        encendido = "encendido" if i < total else ""
+        st.markdown(f'<div class="escritorio" style="left:{desk_left}%"><div class="tablero"></div><div class="patas"></div><div class="monitor {encendido}"></div></div>', unsafe_allow_html=True)
+    for i, agent in enumerate(empleados):
+        estado = estado_empleado(agent.id)
+        clase = "estado-esperando"
+        if "trabajando" in estado:
+            clase = "estado-trabajando"
+        elif "entregó" in estado:
+            clase = "estado-entregado"
+        frases = FRASES_POR_ESTADO.get(estado, FRASES_POR_ESTADO["💤 esperando"])
+        frase = frases[abs(hash(agent.id)) % len(frases)]
+        izquierda = 8 + i * (84 // max(total, 1))
+        st.markdown(
+            f'<div class="personaje {clase}" style="left:{izquierda}%" title="{agent.nombre} — {agent.rol}">'
+            f'{sprite_html(agent)}'
+            f'<div class="bocadillo">{agent.emoji} <b>{agent.nombre}</b> ({agent.rol})<br>{frase}<br><i>👆 clic en "Hablar" para pedirle algo</i></div>'
+            f'<div class="nombre-pj">{agent.emoji} {agent.nombre}</div>'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
 def tab_oficina(agents, memory: Memory, board: MissionsBoard) -> None:
-    st.header("🏢 La Oficina")
-    st.caption("Tu equipo siempre disponible. El centro visual de tu productividad real.")
+    st.markdown('<h2 class="titulo-pixel">🏢 LA OFICINA</h2>', unsafe_allow_html=True)
+    st.caption("Pasa el mouse sobre un compañero para que te hable 💬 · Clic en «Hablar» para enviarle un pedido directo.")
     boss = get_boss(agents)
     hoy = date.today().isoformat()
     if st.button("☀️ Buenos días con la Jefa"):
@@ -115,28 +180,15 @@ def tab_oficina(agents, memory: Memory, board: MissionsBoard) -> None:
         for i, p in enumerate(st.session_state.get("prioridades_hoy", [])):
             st.checkbox(p, value=True, key=f"prio_{i}")
     empleados = [a for a in agents if not a.es_jefa]
-    st.markdown('<div class="escena-oficina">', unsafe_allow_html=True)
-    st.markdown('<div class="sol-pixel"></div><div class="mesas-pixel"></div><div class="piso-pixel"></div>', unsafe_allow_html=True)
-    total = len(empleados)
+    escena_oficina(empleados)
+    st.markdown("**💬 Hablar directamente con un empleado:**")
+    cols_hablar = st.columns(len(empleados))
     for i, agent in enumerate(empleados):
-        estado = estado_empleado(agent.id)
-        clase = "estado-esperando"
-        if "trabajando" in estado:
-            clase = "estado-trabajando"
-        elif "entregó" in estado:
-            clase = "estado-entregado"
-        izquierda = 6 + i * (88 // max(total, 1))
-        color = f"{abs(hash(agent.id)) % 0xFFFFFF:06x}"
-        st.markdown(
-            f'<div class="muneco {clase}" style="left:{izquierda}%; --color-cuerpo: #{color}; --color-sombrero: #{color}">'
-            f'<div class="sombrero"></div><div class="cuerpo"></div><div class="cara"></div></div>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f'<div class="etiqueta-muneco" style="left:{izquierda + 4}%">{agent.emoji} {agent.nombre} · {estado}</div>',
-            unsafe_allow_html=True,
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
+        with cols_hablar[i]:
+            if st.button(f"{agent.emoji} Hablar con {agent.nombre}", key=f"hablar_{agent.id}"):
+                st.session_state["hablando_con"] = agent.id
+                st.session_state["pedido_precargado"] = f"@{agent.nombre}, necesito tu ayuda con: "
+                st.toast(f"{agent.emoji} {agent.nombre} te espera en el chat 💬")
     cols = st.columns(3)
     for i, agent in enumerate(empleados):
         with cols[i % 3]:
@@ -175,6 +227,33 @@ def tab_chat(agents, memory: Memory, board: MissionsBoard, lib: Library) -> None
     with st.chat_message("user"):
         st.markdown(pedido)
     st.session_state.mensajes.append({"rol": "user", "contenido": pedido})
+
+    empleado_directo = None
+    for ag in empleados:
+        if pedido.lower().startswith(f"@{ag.nombre.lower()}") or f"@{ag.nombre.lower()}" in pedido.lower()[:30]:
+            empleado_directo = ag
+            pedido = pedido.replace(f"@{ag.nombre}", "", 1).strip(" ,:")
+            break
+    if empleado_directo:
+        with st.chat_message("assistant"):
+            poner_estado(empleado_directo.id, "⌨️ trabajando")
+            with st.spinner(f"{empleado_directo.emoji} {empleado_directo.nombre} trabaja en tu pedido…"):
+                from office.employees import ejecutar_empleado
+
+                entrega = ejecutar_empleado(
+                    client(), empleado_directo, pedido,
+                    perfil_resumen=memory.get_profile().resumen(),
+                    proyecto=(board.obtener(st.session_state.get("mision_activa_id", "")) or None) and board.obtener(st.session_state.get("mision_activa_id", "")).nombre,
+                    preferencias=memory.contexto_preferencias(empleado_directo.id),
+                )
+            poner_estado(empleado_directo.id, "✅ entregó" if entrega.ok else "💤 descansando")
+            if entrega.ok:
+                st.markdown(f"{entrega.emoji} **{entrega.nombre} responde:**")
+                st.markdown(entrega.texto)
+                st.session_state.mensajes.append({"rol": "assistant", "contenido": entrega.texto})
+            else:
+                st.error(f"⚠️ {entrega.nombre} no pudo responder: {entrega.error}")
+        return
 
     comando = parse_comando(pedido)
     if comando:

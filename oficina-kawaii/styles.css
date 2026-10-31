@@ -1,16 +1,23 @@
-/* Oficina Kawaii — escena pixel-art animada, paleta azul. */
+/* ============================================================
+   Oficina Kawaii — REDISEÑO: oficina pixel-art retro isométrica
+   Paleta cálida: ladrillo, madera, verdes. Sprites animados.
+   ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
 
 :root {
-    --azul: #bcd9ff;
-    --azul-fuerte: #4d94ff;
-    --azul-oscuro: #1f5fbf;
-    --cielo: #e8f4ff;
-    --crema: #f4f9ff;
-    --texto: #1e3a5f;
-    --sombra: 0 4px 14px rgba(31, 95, 191, 0.18);
+    --ladrillo: #a5654a;
+    --ladrillo-osc: #8a4f38;
+    --madera: #c98d5e;
+    --madera-osc: #8a5530;
+    --madera-clara: #e0b184;
+    --verde: #5d9c59;
+    --verde-osc: #3f7a3d;
+    --azul-pc: #7fd4ff;
+    --crema: #fdf3e3;
+    --texto: #3d2b20;
+    --sombra: 0 4px 14px rgba(61, 43, 32, 0.25);
 }
 
 html, body, [class*="css"] {
@@ -19,115 +26,211 @@ html, body, [class*="css"] {
 }
 
 .stApp {
-    background: linear-gradient(180deg, var(--cielo) 0%, var(--azul) 60%, #9cc4f5 100%);
+    background: linear-gradient(180deg, var(--crema) 0%, #f3e2c7 55%, #e8d0ae 100%);
 }
 
-/* ---------- ESCENA PIXEL ART DE LA OFICINA ---------- */
-.escena-oficina {
+.titulo-pixel {
+    font-family: 'Press Start 2P', monospace !important;
+    color: var(--madera-osc);
+    text-shadow: 2px 2px 0 #fff;
+    font-size: 1.05rem;
+}
+
+/* ============ ESCENA PIXEL-ART ============ */
+.escena {
     position: relative;
-    height: 260px;
-    border-radius: 20px;
+    height: 340px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 4px solid var(--azul-oscuro);
-    box-shadow: var(--sombra), inset 0 0 40px rgba(255,255,255,0.35);
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0) 62%, #7fb3ee 62%, #5d97dd 100%);
+    border: 6px solid var(--madera-osc);
+    box-shadow: var(--sombra), inset 0 0 0 3px var(--madera-clara);
     image-rendering: pixelated;
-    margin-bottom: 12px;
-}
-.escena-oficina::before {
-    content: "";
-    position: absolute; inset: 0;
+    margin-bottom: 10px;
+    /* pared de ladrillo */
     background:
-        radial-gradient(circle at 15% 20%, #fff 0 12px, transparent 13px),
-        radial-gradient(circle at 80% 12%, #fff 0 16px, transparent 17px),
-        radial-gradient(circle at 55% 30%, #fff 0 9px, transparent 10px);
-    opacity: .9;
+        repeating-linear-gradient(0deg, transparent 0 14px, var(--ladrillo-osc) 14px 16px),
+        repeating-linear-gradient(90deg, transparent 0 30px, var(--ladrillo-osc) 30px 32px),
+        repeating-linear-gradient(90deg, transparent 0 15px, rgba(0,0,0,.12) 15px 17px, transparent 17px 46px),
+        linear-gradient(180deg, #b57355 0%, var(--ladrillo) 100%);
+    background-blend-mode: multiply;
 }
-.sol-pixel {
-    position: absolute; top: 12px; right: 18px; width: 28px; height: 28px;
-    background: #ffd94d;
-    box-shadow: 0 0 0 4px #ffd94d, 0 0 24px 8px rgba(255, 217, 77, .8);
+
+/* ventanas con luz */
+.ventana {
+    position: absolute; top: 18px; width: 90px; height: 80px;
+    background: linear-gradient(180deg, #bfe6ff 0%, #e8f7ff 60%, #cfe9ff 100%);
+    border: 5px solid var(--madera-osc);
+    box-shadow: inset 0 0 0 3px var(--madera-clara), 0 4px 10px rgba(0,0,0,.2);
+}
+.ventana::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+        linear-gradient(90deg, transparent 46%, var(--madera-osc) 46% 54%, transparent 54%),
+        linear-gradient(0deg, transparent 46%, var(--madera-osc) 46% 54%, transparent 54%);
+}
+.ventana::after {
+    content: ""; position: absolute; left: 8px; top: 8px; width: 26px; height: 18px;
+    background: rgba(255,255,255,.85);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.ventana.v1 { left: 6%; }
+.ventana.v2 { right: 6%; }
+
+/* suelo de madera */
+.suelo {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 110px;
+    background:
+        repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 3px, transparent 3px 46px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, transparent 2px 14px),
+        linear-gradient(180deg, var(--madera) 0%, var(--madera-osc) 100%);
+    border-top: 6px solid var(--madera-osc);
+}
+
+/* escritorios con PC retro */
+.escritorio {
+    position: absolute; bottom: 96px; width: 86px; height: 58px;
+}
+.escritorio .tablero {
+    position: absolute; top: 0; left: 0; right: 0; height: 10px;
+    background: var(--madera-clara); border: 3px solid var(--madera-osc);
+}
+.escritorio .patas {
+    position: absolute; top: 10px; bottom: 0; left: 6px; right: 6px;
+    background:
+        linear-gradient(90deg, var(--madera-osc) 0 6px, transparent 6px calc(100% - 6px), var(--madera-osc) calc(100% - 6px));
+}
+.monitor {
+    position: absolute; top: -34px; left: 14px; width: 44px; height: 34px;
+    background: #d8d2c4; border: 3px solid #6b6459; border-radius: 3px;
+}
+.monitor::before {
+    content: ""; position: absolute; inset: 3px;
+    background: linear-gradient(180deg, var(--azul-pc), #3f9fd8);
+    box-shadow: inset 0 0 8px rgba(255,255,255,.6);
+}
+.monitor::after {
+    content: ""; position: absolute; bottom: -8px; left: 14px; width: 16px; height: 5px;
+    background: #6b6459;
+}
+.monitor.encendido::before {
+    animation: pantallaParpadeo 1.2s steps(2) infinite;
+}
+@keyframes pantallaParpadeo { 50% { filter: brightness(1.35); } }
+
+/* estantería */
+.estanteria {
+    position: absolute; top: 40px; width: 70px; height: 100px;
+    background:
+        repeating-linear-gradient(0deg, var(--madera-clara) 0 22px, var(--madera-osc) 22px 26px),
+        linear-gradient(90deg, var(--madera-osc) 0 6px, transparent 6px calc(100% - 6px), var(--madera-osc) calc(100% - 6px));
+    border: 4px solid var(--madera-osc);
+}
+.estanteria::before {
+    content: ""; position: absolute; top: 4px; left: 10px; right: 10px; height: 16px;
+    background: repeating-linear-gradient(90deg, #c94f4f 0 6px, #4f7fc9 8px 14px, #5d9c59 16px 22px, #d8b24a 24px 30px, transparent 32px);
+}
+
+/* sofá */
+.sofa {
+    position: absolute; bottom: 92px; width: 110px; height: 46px;
+    background: #b5533c; border: 4px solid #7e3524; border-radius: 8px 8px 4px 4px;
+}
+.sofa::before {
+    content: ""; position: absolute; top: -18px; left: 4px; right: 4px; height: 22px;
+    background: #c96a50; border: 4px solid #7e3524; border-radius: 8px 8px 0 0;
+}
+.sofa::after {
+    content: ""; position: absolute; bottom: -12px; left: 8px; right: 8px; height: 12px;
+    background: repeating-linear-gradient(90deg, #7e3524 0 5px, transparent 5px 12px);
+}
+
+/* planta pixel */
+.planta {
+    position: absolute; bottom: 96px; width: 26px; height: 44px;
+}
+.planta::before {
+    content: ""; position: absolute; top: 0; left: 3px; width: 20px; height: 26px;
+    background:
+        radial-gradient(circle at 50% 100%, var(--verde) 0 8px, transparent 9px),
+        radial-gradient(circle at 20% 60%, var(--verde-osc) 0 6px, transparent 7px),
+        radial-gradient(circle at 80% 55%, var(--verde) 0 6px, transparent 7px),
+        radial-gradient(circle at 50% 30%, var(--verde-osc) 0 7px, transparent 8px);
+}
+.planta::after {
+    content: ""; position: absolute; bottom: 0; left: 4px; width: 18px; height: 14px;
+    background: #a5502f; border: 2px solid #7e3524;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+}
+
+/* ============ SPRITES PIXELADOS ============ */
+.personaje {
+    position: absolute; bottom: 96px; width: 48px; height: 56px;
+    cursor: pointer;
+    transition: transform .2s ease, filter .2s ease;
     image-rendering: pixelated;
-    animation: girarSol 12s linear infinite;
 }
-@keyframes girarSol { to { transform: rotate(360deg); } }
-.piso-pixel {
-    position: absolute; left: 0; right: 0; bottom: 0; height: 56px;
-    background:
-        repeating-linear-gradient(90deg, #c98d5e 0 32px, #b97a4c 32px 64px),
-        linear-gradient(180deg, #c98d5e, #a86a40);
-    border-top: 4px solid #8a5530;
+.personaje:hover { transform: scale(1.12) translateY(-4px); filter: drop-shadow(0 0 6px #fff); z-index: 5; }
+.personaje .sprite { position: absolute; inset: 0; }
+
+/* animaciones por estado */
+.personaje.estado-esperando .sprite { animation: respirar 2.6s ease-in-out infinite; }
+.personaje.estado-trabajando .sprite { animation: tipear .18s steps(2) infinite, rebote .5s ease-in-out infinite; }
+.personaje.estado-entregado .sprite { animation: celebra .6s ease-in-out infinite; }
+@keyframes respirar { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(1.04); } }
+@keyframes tipear { 50% { transform: translateY(-2px); } }
+@keyframes rebote { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes celebra { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(4deg); } }
+
+/* bocadillo de diálogo al pasar el mouse */
+.bocadillo {
+    position: absolute; bottom: 66px; left: 50%; transform: translateX(-50%) scale(0);
+    min-width: 150px; max-width: 210px;
+    background: #fff; color: var(--texto);
+    border: 3px solid var(--madera-osc); border-radius: 10px;
+    padding: 6px 10px; font-size: .78rem; font-weight: 700; line-height: 1.25;
+    box-shadow: 0 3px 0 var(--madera-osc);
+    transition: transform .18s cubic-bezier(.68,-0.4,.27,1.4);
+    z-index: 10; pointer-events: none; text-align: center;
 }
-.mesas-pixel {
-    position: absolute; left: 0; right: 0; bottom: 40px; height: 26px;
-    background: repeating-linear-gradient(90deg, transparent 0 118px, #6e4a2f 118px 138px, transparent 138px 256px);
+.bocadillo::after {
+    content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 7px solid transparent; border-top-color: var(--madera-osc);
+}
+.personaje:hover .bocadillo { transform: translateX(-50%) scale(1); }
+
+/* nombre bajo el personaje */
+.nombre-pj {
+    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+    font-size: .68rem; font-weight: 800; color: #fff;
+    background: rgba(61,43,32,.75); padding: 1px 7px; border-radius: 8px; white-space: nowrap;
 }
 
-/* Muñeco pixelado genérico (cuerpo 16x16 escalado) */
-.muneco {
-    position: absolute; bottom: 52px; width: 48px; height: 64px;
-    image-rendering: pixelated;
-    transition: left .6s ease;
-}
-.muneco .cuerpo {
-    position: absolute; inset: 0;
-    background: var(--color-cuerpo, #4d94ff);
-    clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);
-}
-.muneco .cara {
-    position: absolute; top: 10px; left: 12px; width: 24px; height: 18px;
-    background:
-        radial-gradient(circle at 6px 8px, #1e3a5f 0 3px, transparent 4px),
-        radial-gradient(circle at 18px 8px, #1e3a5f 0 3px, transparent 4px),
-        radial-gradient(circle at 12px 15px, #ff8fab 0 2px, transparent 3px);
-}
-.muneco .sombrero {
-    position: absolute; top: -8px; left: 8px; width: 32px; height: 12px;
-    background: var(--color-sombrero, #1f5fbf);
-    clip-path: polygon(0 100%, 15% 0, 85% 0, 100% 100%);
-}
-
-/* Estados animados */
-.muneco.estado-esperando { animation: respirar 2.4s ease-in-out infinite; }
-.muneco.estado-trabajando { animation: caminar .5s ease-in-out infinite alternate, rebote .5s ease-in-out infinite; }
-.muneco.estado-entregado { animation: saltoCelebra .7s ease-in-out infinite; }
-@keyframes respirar { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-@keyframes caminar { from { margin-left: -6px; } to { margin-left: 6px; } }
-@keyframes rebote { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes saltoCelebra { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-16px) scale(1.06); } }
-
-.etiqueta-muneco {
-    position: absolute; bottom: 122px; transform: translateX(-50%);
-    background: rgba(255,255,255,.92); border: 2px solid var(--azul-oscuro);
-    border-radius: 10px; padding: 2px 8px; font-size: .75rem; font-weight: 800;
-    white-space: nowrap;
-}
-
-/* ---------- RESTO DE LA APP ---------- */
+/* ============ RESTO DE LA APP ============ */
 .barra-superior {
-    background: rgba(255,255,255,.82); border-radius: 18px; padding: 12px 18px;
-    box-shadow: var(--sombra); margin-bottom: 14px; border: 2px solid rgba(77,148,255,.45);
+    background: rgba(255,251,240,.9); border-radius: 16px; padding: 12px 18px;
+    box-shadow: var(--sombra); margin-bottom: 14px; border: 3px solid var(--madera);
 }
 .tarjeta-empleado {
-    background: rgba(255,255,255,.94); border-radius: 20px; padding: 16px;
-    box-shadow: var(--sombra); border: 2px solid var(--azul-fuerte); text-align: center;
+    background: rgba(255,251,240,.95); border-radius: 14px; padding: 16px;
+    box-shadow: var(--sombra); border: 3px solid var(--madera); text-align: center;
     transition: transform .15s ease;
 }
 .tarjeta-empleado:hover { transform: translateY(-3px); }
 .emoji-grande { font-size: 2.6rem; }
 .estado-empleado { font-size: .85rem; font-weight: 700; }
-.titulo-pixel { font-family: 'Press Start 2P', 'Nunito', monospace !important; font-size: 1rem; color: var(--azul-oscuro); }
 
 .stButton > button {
-    border-radius: 999px !important; border: none !important;
-    background: linear-gradient(90deg, var(--azul-fuerte), var(--azul-oscuro)) !important;
-    color: #fff !important; font-weight: 800 !important; padding: .45rem 1.2rem !important;
+    border-radius: 10px !important; border: 3px solid var(--madera-osc) !important;
+    background: linear-gradient(180deg, var(--madera-clara), var(--madera)) !important;
+    color: var(--texto) !important; font-weight: 800 !important; padding: .45rem 1.1rem !important;
+    box-shadow: 0 3px 0 var(--madera-osc) !important;
 }
-.stButton > button:hover { filter: brightness(1.08); }
-.stChatMessage { background: rgba(255,255,255,.9) !important; border-radius: 18px !important; border: 2px solid var(--azul) !important; }
-.stProgress > div > div { background: linear-gradient(90deg, var(--azul-fuerte), var(--azul-oscuro)) !important; border-radius: 999px; }
+.stButton > button:hover { filter: brightness(1.07); }
+.stButton > button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--madera-osc) !important; }
+
+.stChatMessage { background: rgba(255,251,240,.94) !important; border-radius: 14px !important; border: 3px solid var(--madera) !important; }
+.stProgress > div > div { background: linear-gradient(90deg, var(--verde), var(--verde-osc)) !important; border-radius: 999px; }
 .stTabs [data-baseweb="tab-list"] { gap: 8px; }
-.stTabs [data-baseweb="tab"] { background: rgba(255,255,255,.78); border-radius: 999px 999px 0 0; font-weight: 800; }
-.columna-tablero { background: rgba(255,255,255,.72); border-radius: 16px; padding: 10px; border: 2px dashed var(--azul-fuerte); }
-.stTextInput > div > div > input, .stTextArea > div > div > textarea { border-radius: 14px !important; border: 2px solid var(--azul-fuerte) !important; }
+.stTabs [data-baseweb="tab"] { background: rgba(255,251,240,.85); border-radius: 10px 10px 0 0; font-weight: 800; border: 3px solid var(--madera); border-bottom: none; }
+.columna-tablero { background: rgba(255,251,240,.85); border-radius: 12px; padding: 10px; border: 3px dashed var(--madera); }
+.stTextInput > div > div > input, .stTextArea > div > div > textarea { border-radius: 10px !important; border: 3px solid var(--madera) !important; background: #fffdf8 !important; }
